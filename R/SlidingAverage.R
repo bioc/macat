@@ -1,25 +1,9 @@
 
-euclidian <- function(x, y) {
-  return(sum((x - y)^2))
-}
-
-norm2 <- function(x) {
-  return (sqrt(sum(x*x)))
-}
-
-
-#--------------------------------------------------------------------------
-slidingAverageAt <- function(position, geneLocations, expr, kernel, params=list()){
-  # this function returns the kernel weighted average given a position
-  # values is a matrix of coordinate vectors in the rows
-  # position is the coordinate vector of the point of interest
-  # kernel is a kernel function
-  # params is a vector of additional kernel arguments
-  geneLocations = as.matrix(geneLocations)
-  # apply: zweiter parameter margin 1:rows 2:cols
-  kernel.weights = kernel(geneLocations, position, params)
-  return(sum(kernel.weights * expr) / (sum(kernel.weights) + 1))
-}
+squaredDist <- function(x,y){
+  # x,y: (column) vectors
+  z <- as.vector(x-y)
+  return(as.vector(t(z) %*% z))
+} #squaredDist
 
 #--------------------------------------------------------------------------
 rbf <- function(geneLocations, position, params=list((gamma=1/10^13))) {
@@ -29,9 +13,9 @@ rbf <- function(geneLocations, position, params=list((gamma=1/10^13))) {
   # deviation is one MB (->1 cmorgan)
   # argumentation with mean distance between genes could also explain.
   gamma = params$gamma
-  kernel<-function(x,y,gamma){return(exp(-gamma * norm2(x - y)^2))}
+  kernel<-function(x,y,gamma){return(exp(-gamma * squaredDist(x,y)))}
   return(apply(geneLocations, 1, kernel, position, gamma))
-}
+} #rbf
 
 
 #--------------------------------------------------------------------------
@@ -48,7 +32,7 @@ kNN <- function(geneLocations, position, params) {
   weights <- numeric(length(geneLocations))  
   weights[knn] = 1
   return(weights)
-}
+} #kNN
 
 #--------------------------------------------------------------------------
 basePairDistance <- function(geneLocations, position, params=(distance = 1000000)) {
@@ -86,7 +70,7 @@ plotSliding <- function(data, chromosome, sample, kernel, kernelparams=NULL, ste
   points = compute.sliding(data, chromosome, sample, kernel, kernelparams, step.width)
   steps = points[,1]
   sliding.value = points[,2]
-  if (interactive())
+  if (interactive() && capabilities()["X11"])
     x11(width=10, height=6)
   print(plot(genes, expr, "p", ylab="Expression", xlab="Coordinate", main="Sliding Average", ylim=c(min(c(expr, sliding.value,0)), max(expr, sliding.value))))
   lines(steps, sliding.value, col="red",lwd=2)
@@ -181,7 +165,7 @@ pair.distances <- function(m, chromosomes) {
 # the 
 compare.gammas <- function(m, chromosome, sample) {
   max = maxDistances(m, chromosome)
-  if (interactive())
+  if (interactive() && capabilities()["X11"])
     x11(width=16, height=8)  
   plotSliding(m, 6, 3, rbf, list(gamma=log(2)/((max/2)^2)))
   maxHalf = compute.sliding(m, 6, 3, rbf, list(gamma=1/((max/2)^2)))

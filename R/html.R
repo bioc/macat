@@ -13,14 +13,14 @@ myhtml <- function (genelist, chrom, SLIDINGpic, CHROMpic, filename, mytitle, ot
     require(annotate)
     outfile <- file(filename, "w")
     cat("<html>", "<head>", "<TITLE>Result Page for Chromosome</TITLE>", "</head>",
-        "<body bgcolor= >", "<H1 ALIGN=CENTER> MACAT: Microarray Chromosomal Abberation Tool</H1>",
+        "<body bgcolor= >", "<H2 ALIGN=CENTER> MACAT: MicroArray Chromosome Analysis Tool</H2>",
         file = outfile, sep = "\n")
     if (!missing(mytitle)) 
-        cat("<CENTER><H1 ALIGN=\"CENTER\">", mytitle, " </H1></CENTER>\n", file = outfile,
+        cat("<CENTER><H2 ALIGN=\"CENTER\">", mytitle, " </H2></CENTER>\n", file = outfile,
             sep = "\n")
 
 
-    cat("<br>", "<H3>SlidingAverage Plot: <br >Yellow dotted regions seem to be interesting according to the statistic<\H3>", file=outfile)
+    cat("<br>", "<H3>Result of Kernel Smoothing</H3><p>Yellow dotted regions are considered significant.</p>", file=outfile)
     
     #---------------------------------------------
     # here the pictures
@@ -34,7 +34,7 @@ myhtml <- function (genelist, chrom, SLIDINGpic, CHROMpic, filename, mytitle, ot
     
     cat("<p style=",st,"><img src=\"",CHROMpic,"\" width=",w,"height=\"80\" alt=\"\" border=\"0\"><\p>" ,sep="" ,file = outfile)
     cat("<br><br>", file=outfile)
-    cat("<H3> List of interesting genes:<br>Yellow marked regions in the plot<H3>", file=outfile)
+    cat("<H3>Genes within Significant Regions</H3>", file=outfile)
 
 
     #---------------------------------------------
@@ -67,7 +67,7 @@ myhtml <- function (genelist, chrom, SLIDINGpic, CHROMpic, filename, mytitle, ot
     } 
     cat("</body>", "</html>", sep = "\n", file = outfile)
     close(outfile)
-}
+} #myhtml
 
 
 ####################################################################################
@@ -149,7 +149,7 @@ get.results <- function(MACATevalScoringOBJ){
      }
    }
   
-   genes=original.geneid[sig]
+   genes <- unique(original.geneid[sig])
    if (length(genes)==0){
      return(NULL)
    }

@@ -1,4 +1,4 @@
-%\VignetteIndexEntry{MicroArray Chromosomal Aberration Tool}
+%\VignetteIndexEntry{MicroArray Chromosome Analysis Tool}
 %\VignetteDepends{graphics,Biobase,annotate,reposTools}
 %\VignetteKeywords{microarray chromosome differential gene expression}
 %\VignettePackage{macat}
@@ -51,11 +51,9 @@
 \addtolength{\oddsidemargin}{-0.5cm}
 \addtolength{\evensidemargin}{-0.5cm}
 
-
-
 \begin{document}
 \SweaveOpts{eps=false}
-\title{MACAT - Microarray Chromosomal Aberration Tool }
+\title{MACAT - MicroArray Chromosome Analysis Tool }
 \author{Joern Toedling, Sebastian Schmeier,Matthias Heinig,\\
         Benjamin Georgi, and Stefan Roepcke}
 \date{}
@@ -64,12 +62,17 @@
 \pagebreak
 
 \section{Introduction}
-This project aims at linking the term \emph{differential gene expression} to the chromosomal localization
-of genes. MACAT is motivated by the common observation of chromosomal aberrations in tumor cells.
-The basic idea is to define tumor subtypes by characteristic patterns of aberrations. These patterns
-might be used for classification of new tumor samples. 
-
-In the following we propose a statistical approach for identifying significantly differentially 
+This project aims at linking the term \emph{differential gene expression} to the chromosomal localization of genes. \\
+Microarray data analysts have defined tumor subtypes by specific gene expression profiles, consisting of genes that show differential expression between subtypes (see, e.g., \cite{Yeoh2002}). 
+However, tumor subtypes have also been characterized by phenomena involving
+large chromosomal regions. For instance, Christiansen et al.
+\cite{Christiansen2004} report on
+a subtype of acute myeloid leukemia, showing mutations
+in the \emph{AML1} gene on chromosome 21 along with deletions or loss of
+chromosome arm 7q.
+A natural approach to bridging the gap between these two paradigms is to
+link scoring for differential gene expression to the chromosomal localization of genes. Tumor subtypes can be defined by differential expression patterns affecting sizeable regions of certain chromosomes.\\
+In the following, we propose a statistical approach for identifying significantly differentially 
 expressed regions on the chromosomes based on a regularized t-statistic 
 (see section \ref{sec:scoringttest}). We address the problem of interpolating the scores between genes
 by applying kernel functions (see section \ref{smoothing}). In order to evaluate the significance of 
@@ -83,15 +86,13 @@ which is a collection of R-libraries dealing with
 various aspects of the analysis of biological data including normalization, assessing background information
 on genes, and visualization of data. \\
 We apply our method on a publicly available data set of acute lymphoblastic leukemia (ALL), described
-in \cite{Yeoh2002}. This data set consists of 327 tumor samples subdivided into 10 classes. In order to
-investigate chromosomal aberrations within one tumor class we consider the expression levels of
-this class versus all the other subclasses.
-
+in \cite{Yeoh2002}. This data set consists of 327 tumor samples subdivided into 10 classes. In order to investigate chromosomal phenomena defining one tumor class, we consider the expression levels of
+that class versus all the other subclasses.
 
 \section{Methods}
 \subsection{Data Preprocessing}
 We assume normalized expression data, which can be provided already as a matrix in R or in form of a delimited text file. In the preprocessing step the expression data is integrated with gene location data for the given microarray into one common data format. 
-Herefore \Rpackage{macat} provides the \Rfunction{preprocessedLoader} or its 
+For this \Rpackage{macat} provides the \Rfunction{preprocessedLoader} or its 
 convenience-wrapper \Rfunction{buildMACAT}, which employ various Bioconductor 
 \cite{bioconductor} functions.\\
 The resulting data format is a list containing:
@@ -107,21 +108,23 @@ Currently \Rpackage{macat} is limited to commercial Affymetrix$^\textup{\textreg
 \subsection{Scoring of Differential Gene Expression}
 \label{sec:scoringttest}
 For each gene we compute a statistic denoting the degree of differential
-expression between two given groups of samples.In the context of the leukemia data set
+expression between two given groups of samples. 
+In the context of the leukemia data set
 the two groups of samples are given by one tumor class
 in the first group and the remaining nine classes forming the second.
 The statistic is the regularized t-score introduced in \cite{Tusher2001}. This so-called
 \emph{relative difference} is defined as
 $$ d(i) = \frac{ \overline{x}_A(i) - \overline{x}_B(i) }
 { s(i) + s_0 } $$
-where $\overline{x}_A(i), ~\overline{x}_B(i)$ are the mean expression levels
+where $\overline{x}_A(i)$ and $\overline{x}_B(i)$ are the mean expression levels
 of gene $i$ in group $A$ and $B$ respectively, $s(i)$ is the pooled
-variance of the expression values of gene $i$, and $s_0$ is constant for
+standard deviation of the expression values of gene $i$, and $s_0$ is constant for
 all genes.
 In essence, $d(i)$ is Student's t-statistic augmented by a
-fudge factor $s_0$ in the denominator, which is supposed to prevent a high
-statistic for genes with a very low variance $s(i)$. We chose $s_0$ to be
-the median over all gene variances $s(i)$, analogous
+fudge factor $s_0$ in the denominator, which is introduced to prevent a high
+statistic for genes with a very low standard deviation $s(i)$. 
+We set $s_0$ to
+the median over all gene standard deviations $s(i)$, analogous
 to \cite{Tibshirani2002}. \\
 Since the null-distribution of these regularized t-scores is conceptually
 different from a known t-distribution, we have to approximate it by
@@ -129,17 +132,29 @@ random permutations (for details see section \ref{StatEval}).\\
 However, \Rpackage{macat} also allows to compute Student's classical t-statistic
 for each gene and assess significance based on the underlying t-distribution.
 
-
-
 \subsection{Smoothing Kernels}
 \label{smoothing}
-The distribution of genes measured on the array
-over the whole length of the chromosome is not uniform. Since we
-want to compute differential expression statistics for larger
-chromosomal regions we need a method to interpolate between the measured
-values. Several different approaches will be discussed here:
-\label{kernel}
+On each chromosome only a limited number of genes can be measured with
+a microarray. The distance in base pairs between measured genes also varies
+greatly.
+Since we want to compute differential expression statistics for larger
+chromosomal regions, we need a method to interpolate scores between 
+measured values.
+This interpolation, however, does not aim to assign statistics to
+non-coding regions, but to provide a
+smooth estimate of differential expression over large chromosomal regions.\\
+Formally this can be seen as a regression problem, 
+$y = f(x)$, with $y$ being the t-score and $x$ being one
+base pair position on the chromosome. 
+(In the following, $x$ will often be called \emph{chromosomal coordinate}.)
+Score $y_j$ is to be estimated for a large number of coordinates $x_j$, when
+$f(x)$ is known only for few observations $x_i$.
+Kernel methods achieve \emph{smooth} estimates of the function $f(x)$ by 
+fitting different models at each query point $x_0$ using only observations
+close to $x_0$ \cite{HastieElementsChapter6}.\\
+Three different kernel approaches will be discussed here:
 
+\label{kernel}
 \begin{itemize}
 \item k-Nearest Neighbor: For every chromosomal coordinate compute the average of the k nearest genes.
 \item Radial basis function (rbf): For every chromosomal coordinate compute the average over all genes weighted by distance as explained in detail below.
@@ -148,77 +163,122 @@ using this kernel the average is taken over all genes within a certain radius
 of the position, whose value has to be determined.
 \end{itemize}
 
-
 \label{math}
-All of the approaches presented above can be expressed as weighted sums of 
-expression values. This allows us to use a matrix multiplication as basic
-framework for the computations where we multiply our expression matrix with 
+The kernel approaches presented above can be expressed as weighted sums of 
+scores. Thus, we use a matrix multiplication as the basic
+framework for the computations, where we multiply our score matrix with 
 the so called kernel matrix. 
 
-
-Let $E$ be the expression
-data with $ngenes$ genes in the rows and $nsamples$ samples in the columns
-and $K$ the kernel matrix. Further assume that we want to interpolate the
-smoothed expression values at $nsteps$ genomic locations that are stored in a
-vector we call $steps$. So the kernel matrix has the dimensions
-($ngenes$ x $nsteps$). One entry of $K(gene, step)$ represents the weight
-that the gene $gene$ has at the location $step$. So the product
+Let $E$ be the score matrix, 
+with rows corresponding to $n$ genes and columns corresponding
+to $m$ samples. 
+For each gene $g$ the chromosomal coordinate $geneLocation_g$ is known.
+Further, let $K$ be the kernel matrix. 
+Let us assume that we want to interpolate the
+scores at $s$ genomic locations that are stored in a
+vector we call $\vec{s}$. So the kernel matrix has the dimensions
+($n \times s$). One entry of $K(g, l)$ represents the weight
+that the gene $g$ has at the location $l$. So the product
 $$ E^TK = S  $$
-gives the smoothed matrix $S$ of dimension ($nsamples$ x $nsteps$), where one
-entry of $S(sample, step)$ represents the smoothed interpolation of all
-expression values of the $sample$ at the location $steps_{step}$.
+gives the smoothed matrix $S$ of dimension ($m \times s$), where one
+entry $S(i, l)$ represents the interpolation of
+the score of sample $i$ at location $\vec{s}_{l}$.
 
-
-The only thing that needs to be done is the computation of the kernel
-matrix $K$. The weights depend only on the location of the genes relative
+The smoothed matrix $S$ is the product of the score matrix
+$E$ times the kernel matrix $K$.
+The weights in $K$ depend only on the location of the genes relative
 to the steps, for which interpolated values are to be computed.\\
 For the three kernels listed above the kernel functions are:
 \begin{itemize}
 \item k-nearest neighbors
 \[
- K(gene, step) = \left\{ \begin{array}{ll}
-1 & \mbox{if gene is one of the $k$ nearest neighbors of step} \\
+ K_{kNN}(k, g, l) = \left\{ \begin{array}{ll}
+1 & \mbox{if $g$ is one of the $k$ nearest neighbors of $l$} \\
 0 & \mbox{else} \\
 \end{array} \right. \]
 
 \item radial basis function
 \[
- K(gene, step) = \left. \begin{array}{l}
-\exp (-\gamma \| geneLocation_{gene} - steps_{step} \|^2) \\
+ K_{rbf}(\gamma, g, l) = \left. \begin{array}{l}
+\exp (-\gamma \cdot \| geneLocation_{g} - \vec{s}_{l} \|^2) \\
 \end{array} \right.
 \]
 
 \item base-pair distance
 \[
- K(gene, step) = \left\{ \begin{array}{ll}
-1 & \mbox{if $geneLocation_{gene}$ is within $distance$ of step} \\
+ K_{bpd}(d, g, l) = \left\{ \begin{array}{ll}
+1 & \mbox{if $geneLocation_{g}$ is within radius $d$ of $l$} \\
 0 & \mbox{else}
 \end{array} \right. \]
 \end{itemize}
 
 \label{params}
-The free parameters of the kernels determine the degree of smoothing. 
-Take for instance the kNN kernel: the smaller k gets the fewer
+The free parameters ($k,~\gamma,~d$) of the kernel functions
+determine the degree of smoothing. 
+Take for instance the kNN kernel: the smaller $k$ gets, the fewer
 genes are averaged and in the extreme case interpolations take only
 the value of the next gene ($k = 1$). In the case of the base-pair distance
-kernel with a very small distance, you will see spikes at the locations, where
+kernel with a very small distance $d$, 
+you will see spikes at the locations, where
 genes are located, and zero elsewhere. 
 For very large distances the smoothing will remove
-all spikes and the value for each position is roughly the same. This shows that
+all spikes and the value for each position is roughly the same. \\
+More formally, kernel parameters define the width of the
+window, over which values are used to estimate the regression function. 
+Changing the window width is a
+\emph{bias-variance tradeoff} situation. If the window around $x_0$ is narrow, 
+only a small number of observations will
+be used to estimate $f(x_0)$. In this case the estimate will have a relatively
+large variance but only a small bias. However, if the window is wide, a large
+number of observations will be used for the estimate. This estimate
+tends to show a low variance but comes with a high bias, since now
+observations $x_i$ far from $x_0$ are used as well and we still assume that
+$f(x_i)$ is close to $f(x_0)$ \cite{HastieElementsChapter6}.\\
+This shows that
 a good choice of the kernel parameters is very important. For the three kernel
-functions presented here we fit the parameters from the data:
+functions presented above, we fit the parameters from the data:
 \begin{itemize}
-\item kNN: the number of genes on the chromosome is determined and $k$ is set to
-cover approximately 10\% of the genes.
-\item rbf: the width of the kernel is controlled by the parameter gamma. We demand
-that for each position where we interpolate there should be at least two neighboring
-genes that both have a weight of 1/2 because this yields a simple average between 
-these. To guarantee weights of one half the maximum gene distance ($max$) between 
-the genes on the chip has to be determined. Then gamma can be computed as:
+\item kNN: The number of genes on the chromosome is determined and $k$ is set
+to cover approximately 10\% of the genes.
+\item rbf: The width of the window is controlled by the parameter $\gamma$.
+We require that for each position $l$, for which we interpolate the score,
+there should be at least two genes within the window for averaging.
+If both of these genes are located equally far from $l$, 
+both will receive a weight of 1/2, thus  resulting in a simple average over 
+these two genes' scores. To allow for these weights, 
+the maximal gene distance ($max$) between any two neighboring genes
+on the chromosome has to be determined. Then $\gamma$ can be computed as:
 $$\gamma = \frac{\ln{2}}{(max/2)^2}$$
-\item base-pair distance: as with the rbf kernel we demand that there are at least
-two genes within the radius that form the average. So the distance is set to $max$.
+\item base-pair distance: as with the rbf kernel, we require that the average
+is computed at least over two genes. So the parameter $d$, which describes the
+radius, within which genes are to be used to compute the average,
+is set to $max$, the maximal gene distance between any two genes
+on the chromosome.
 \end{itemize}
+These biologically motivated heuristics for choosing the kernel parameters
+provide good smoothing results on test data without any overfitting of
+estimated scores to the observed values.\\
+Nevertheless, we recommend to determine the optimal parameter settings by
+cross-validation \cite{HastieElementsChapter7}, for which 
+\Rpackage{macat} provides the function \Rfunction{evaluateParameters}. Hereby, one part of
+the genes is left out, the interpolation is computed based on the remaining
+genes only, and the quality of interpolation is assessed by the residual
+sum of squares between the scores of the left-out genes and their interpolated
+values. The above mentioned biologically heuristics, by default, provide a
+starting point for a grid-search over multiples of these parameter settings.
+The optimal parameter setting is the one with the minimal residual 
+sum of squares. For instance, in Figure \ref{fig:evalparam}, the
+result of an evaluation of the parameter  $k$ from the 
+$k$-nearest-neighbor kernel is depicted. From this evaluation, 
+the optimal $k$ seems to be approximately 30.\\
+
+\begin{figure}[htbp]
+  \begin{center}
+    \includegraphics[width = 0.9 \columnwidth]{evalkNN6}
+    \caption{Result plot for evaluating kNN parameter settings}
+    \label{fig:evalparam}
+  \end{center}
+\end{figure}
 
 \subsection{Statistical Evaluation}
 \label{StatEval}
@@ -230,7 +290,11 @@ permutations, preferably more. For each of these permutations the (regularized)
 t-statistic is recomputed for each gene. Thus, for each gene we obtain
 $B$ permutation statistics and consequently an \emph{empirical p-value},
 denoting the proportion of the $B$ permutation statistics being greater
-or equal than the actual statistic that is based on the true class labels.\\
+or equal than the actual statistic that is based on the true class labels.
+The permutation statistics also provide upper and lower significance
+borders, which are smoothed using the same kernel
+function as for the original statistics.
+
 Optionally,  to judge the significance of differential expression over
 whole chromosomal regions, one could instead investigate permutations of
 the ordering of genes on chromosomes. For each of these permutations
@@ -244,7 +308,7 @@ which is considerably faster and yields results that are
 easier to validate and interpret statistically.\\
 This approach is implemented in the \Rpackage{macat}-function
 \Rfunction{evalScoring}, which can be seen as the core function of \Rpackage{macat}. See
-appendix \ref{ExampleSession} for an examplary use of the function and its arguments.\\
+appendix \ref{ExampleSession} for an exemplary use of the function and its arguments.\\
 One important issue is that, when analyzing many chromosomes and classes, one
 might obtain statistically significant results by chance (\emph{multiple-
 testing problem}). In the given setting, classical procedures
@@ -277,7 +341,6 @@ The plot region ranges from zero to the length of the respective chromosome.
 
 \begin{figure}[htbp]
   \begin{center}
-    %\epsfig{file=chrom6TkNN.eps, width = 0.9 \columnwidth}
     \includegraphics[width = 0.9 \columnwidth]{chrom6TkNN}
     \caption{Example plot of plot.MACATevalScoring}
     \label{fig:exampleplot}
@@ -300,7 +363,6 @@ For each gene some annotation, a click-able LocusID linked to the NCBI web site,
 
 
 
-
 \section{Results}
 
 This section describes the results, we obtain from an exemplary analysis 
@@ -313,7 +375,7 @@ We have investigated regions of chromosome six for significant differential expr
 Figure \ref{fig:html} shows that there is a region on the p-arm of chromosome six
 that is significantly under-expressed. The genes within that region comprise also the
 well known MHC class II genes that are known to be expressed by B-lymphocytes, but not
-by T-lymhocytes.
+by T-lymphocytes.
 Other genes in this region remain to be investigated in more detail.\\
 Apart from this region the data reveals no other significant differences in 
 gene expression between T- and B-lymphocyte ALL on chromosome six.
@@ -355,7 +417,7 @@ E2A & 9 & 9p24.3 & 23189 & ''By RT-PCR and Western blot analysis, Sarkar et al. 
 
 \section{Discussion and Outlook}
 
-As described in the previous section, applying our method, we detected a chromosomal stretch as
+As described in the previous section, applying our method, we detected a chromosomal region as
 significantly differentially expressed, which is in agreement with biological
 knowledge of the two sample classes involved. This gives an indication that the chromosomal regions
 annotated as being significant by the method are indeed biologically meaningful.
@@ -365,7 +427,8 @@ associated with oncogenesis.
 This fits well with our expectation, since it appears reasonable that different tumor subtypes can be
 characterized on the molecular level by different expression levels for genes relevant to oncogenesis. 
 
-One point of interest for future research would be the application of MACAT on other publicly
+One point of interest for future research would be the application of 
+\Rpackage{macat} on other publicly
 available data sets and contrasting the results with relevant biological expert knowledge to evaluate
 performance. This way, one could get an clearer impression of the extend of possible applications.
 
@@ -375,18 +438,10 @@ reference for samples with ''normal'' gene expression levels (``normal'' denotin
 patients with a tumor). Of course, due to the noisy nature of microarray data, this approach would 
 have to overcome some structural and technical difficulties to make the measured expression levels
 comparable. Given that a suitable data set could be found and the compatibility issues resolved, one
-could examine the characteristic patterns of chromosomal aberrations in tumor subclasses as opposed to
-normal tissue which is a more general question than the question of differences between 
-subclasses of the same tumor type, which we have considered in the analysis above.
+could examine the characteristic patterns of chromosomal phenomena in tumor subclasses as opposed to
+normal tissue.
 
-The method, which we have described, can detect significant differential expression for 
-chromosomal regions. However, the reason for the differential expression, be it a deletion,
-amplification,translocation or other chromosomal event, remains to be investigated. 
-%One shortfall in the current
-%version is that translocation events that are frequently affecting genes, also listed in table \ref{examplegenes} 
-%are not considered. A possible extension of the method to accommodate for
-%translocations could be to look at the distribution of gene-wise expression levels over all chromosomes the gene
-%is not located on. Uncharacteristically high expression levels would then hint towards a translocation event. 
+The method, which we have described, can detect significant differential expression for chromosomal regions. However, the reason for the differential expression, be it a mutation, translocation, hypermethylation, loss of heterozygosity, or another event, remains to be investigated. 
 
 Thus, results obtained by our method should be verified by suitable experiments. One could think of a customized 
 cDNA or oligo chip that contains all known genes, including fusion-genes, stemming from translocation events, 
@@ -407,8 +462,9 @@ Nevertheless, we have shown that our method provides a solid baseline for gene-w
 \label{ExampleSession}
 
 \subsection{The Beginning}
-In this section, we show an example MACAT session. First of
-all, one has to include the library and to load the data set provided in the package.
+In this section, we show an example \Rpackage{macat} session. First of
+all, one has to include the library and to load the data set provided in the data
+package \Rpackage{stjudem}.
 <<>>=
 library(macat)
 loaddatapkg("stjudem")
@@ -431,9 +487,9 @@ unique(stjude$labels)
 table(stjude$labels)
 @ 
 There are ten different classes of tumor patients. The next
-question is how many probeIDs lie on chromosome 1.
+question is how many probe sets are mapped to chromosome 1.
 <<>>=
-length(stjude$geneName[stjude$chromosome==1])
+sum(stjude$chromosome==1)
 @ 
 Now for some visualization. We want to plot the sliding average 
 of the expression values from sample 3 along chromosome 6 with the default rbf-kernel (for details see section \ref{sec:viz}).
@@ -453,16 +509,38 @@ plotSliding(stjude, 6, sample=3, kernel=rbf)
 See the result in figure \ref{fig:sliding}.
 
 
-
 \subsection{Deeper Investigation}
-Next we investigate the data for chromosomal regions showing differential expression. We again look at chromosome 6 
+Next we investigate the data for chromosomal regions showing differential expression. Again, we search chromosome 6 
 for some specific differences between T-lymphocyte ALL (class "T") and B-lymphocyte ALL (all other classes). 
-Take a look on section \ref{sec:scoringttest} (Scoring differential expression) for details on the score. 
-First we use the \verb=evalScoring= function to build a \Rclass{MACATevalScoring} object. 
-This may take some time due to the number of permutations. We first use the default Gaussian(rbf) kernel 
-for smoothing the scores.
+Take a look on section \ref{sec:scoringttest} (Scoring differential expression) for details on the score. \\
+We want to use a kNN-kernel for interpolation between the scores.
+First, we determine the optimal parameter settings, using the function
+\Rfunction{evaluateParameters}.
+<<fig=FALSE,eval=FALSE>>=
+evalkNN6 = evaluateParameters(stjude, class="T", chromosome=6, kernel=kNN,
+                              paramMultipliers=c(0.01,seq(0.1,2.0,0.1),2.5))
+@
+Let's have a look at the result:
 \begin{verbatim}
-> e1 = evalScoring(stjude, class="T", chromosome=6, nperms=1000)
+> evalkNN6$best
+
+$k
+[1] 30
+
+> plot(evalkNN6)
+\end{verbatim}
+The result should look similar to Figure \ref{fig:evalparam}.
+According to this result,
+the optimal parameter setting for the kNN kernel with our data seems to be
+$k=30$.
+We use this $k$ for the search for significantly differentially expressed
+chromosome regions. The \Rfunction{evalScoring} is used 
+to build a \Rclass{MACATevalScoring} object. 
+This may take some time due to the number of permutations. 
+
+\begin{verbatim}
+> e1 = evalScoring(stjude, class = "T", chromosome = 6, nperms = 1000,
+       kernel = kNN, kernelparams = evalkNN6$best, cross.validate= FALSE)
 
 Investigating 43 samples of class T ...
 Compute observed test statistics...
@@ -476,51 +554,30 @@ Compute sliding values for permutations...
 All done.
 \end{verbatim}
 
-Next, the same analysis with a k-nearest neighbor kernel.
-
-\begin{verbatim}
-> e2 = evalScoring(stjude, class="T", chromosome=6, nperms=1000,kernel=kNN)
-\end{verbatim}
-
-We can compare the two results by using the plot function \Rfunction{plot.MACATevalScoring} (see figure \ref{fig:comparison}).
-\begin{verbatim}
-> x11(width=12,height=12)
-> par(mfrow=c(2,1))
-> plot(e1, output="x11", new.device=F)
-> plot(e2, output="x11", new.device=F)
-\end{verbatim}
-
-\begin{figure}[htbp]
-  \begin{center}
-    %\epsfig{file=comparekernels6T.eps, width = 0.9 \columnwidth}
-    \includegraphics[width= 0.9 \columnwidth]{comparekernels6T}
-    \caption{Comparison of two kernel functions for smoothing scores. Top: Radial basis function, Bottom: k-nearest neighbor}
-    \label{fig:comparison}
-  \end{center}
-\end{figure}
-
 
 \subsection{Collecting Results}
-Next, we use the plot function \Rfunction{plot.MACATevalScoring} to generate an HTML-page on-the-fly. 
+Next, we use the plot function \Rfunction{plot.MACATevalScoring} to generate an HTML-page. 
 Therefore, we set the parameter \Rfunarg{output} to "html" (see section \ref{sec:viz}). 
 \begin{verbatim}
 > plot(e1, output="html")
 \end{verbatim}
-See the result in Figure \ref{fig:html}. We get some useful information about genes, which lie in the highlighted regions.\\[0.3cm]
+See the result in your web browser; it should look similar to
+Figure \ref{fig:html}. Some annotation of genes, which lie in the highlighted regions, is provided.\\[0.3cm]
 This ends our short example session. Have fun using \Rpackage{macat}!
 
 \newpage
 
-%\bibliographystyle{plain}
-%\bibliography{macat_docu.bib}
-\begin{thebibliography}{10}
+\section*{Acknowledgments}
+The authors would like to thank Stefanie Scheid and Florian Markowetz for
+helpful discussions and proof-reading, Claudio Lottaz for countless hints
+on building an R-package, and Alexander Schliep, Rainer Spang, Eike Staub,
+and Martin Vingron for setting up our  knowledge and motivation for this
+project. 
+Our special thanks go to two reviewers, whose comments have led to great
+improvements of \Rpackage{macat}.
 
-\bibitem{Alitalo}
-K.~Alitalo, M.~Schwab, C.~Lin, H.E. Varmus, and J.M. Bishop.
-\newblock Homogeneously staining chromosomal regions contain amplified copies
-  of an abundantly expressed cellular oncogene (c-myc) in malignant
-  neuroendocrine cells from a human colon carcinoma.
-\newblock {\em Proc. Nat. Acad. Sci.}, 80:1707--1711, 1983.
+\begin{thebibliography}{00}
+
 
 \bibitem{Yeoh2002}
 E.J.~Yeoh et~al.
@@ -528,11 +585,13 @@ E.J.~Yeoh et~al.
   pediatric acute lymphoblastic leukemia by gene expression profiling.
 \newblock {\em Cancer Cell}, 1(2):133--143, March 2002.
 
-\bibitem{Tibshirani2002}
-R.~Tibshirani et~al.
-\newblock Diagnosis of multiple cancer types by shrunken centroids of gene
-  expression.
-\newblock {\em Proc. Nat. Acad. Sci.}, 99(10):6567--6572, 2002.
+\bibitem{Christiansen2004}
+D.~H. Christiansen, M.~K. Andersen, and J. Pedersen-Bjergaard.
+\newblock Mutations of {\em AML1} are common in therapy-related myelodysplasia
+  following therapy with alkylating agents and are significantly associated
+  with deletion or loss of chromosome arm 7q and with subsequent leukemic
+  transformation.
+\newblock {\em Blood}, 104(5):1474--1481, 2004.
 
 \bibitem{bioconductor}
 Robert~C. Gentleman, Vincent~J. Carey, Douglas~J. Bates, Benjamin~M. Bolstad,
@@ -543,37 +602,36 @@ Robert~C. Gentleman, Vincent~J. Carey, Douglas~J. Bates, Benjamin~M. Bolstad,
   Yee~Hwa Yang, , and Jianhua Zhang.
 \newblock Bioconductor: Open software development for computational biology and
   bioinformatics.
-\newblock {\em Bioconductor Project Working Papers. Working Paper 1.}, 2004.
-
-\bibitem{kamps}
-M.~P. Kamps, A.~T. Look, and D.~Baltimore.
-\newblock The human t(1:19) translocation in pre-b all produces multiple
-  nuclear e2a-pbx1 fusion proteins with differing transforming potentials.
-\newblock {\em Genes Dev.}, 5:358--368, 1991.
-
-\bibitem{omim}
-V.A. McKusick.
-\newblock {\em Mendelian Inheritance in Man. A Catalog of Human Genes and
-  Genetic Disorders}.
-\newblock Johns Hopkins University Press, Baltimore, 12 edition, 1982.
-
-\bibitem{sarkar}
-S.~Sarkar, B.~C. Roy, N.~Hatano, T.~Aoyagi, K.~Gohji, and R.~Kiyama.
-\newblock A novel ankyrin repeat-containing gene (kank) located at 9p24 is a
-  growth suppressor of renal cell carcinoma.
-\newblock {\em J. Biol. Chem.}, 277:36585--36591, 2002.
-
-\bibitem{Schliep1}
-A.~Schliep, A.~Schonhuth, and C.~Steinhoff.
-\newblock Using hidden markov models to analyze gene expression time course
-  data.
-\newblock {\em Bioinformatics}, 19 Suppl 1:i255--63, 2003.
+\newblock {\em Genome Biology}, 5:\penalty0 R80, 2004.
 
 \bibitem{Tusher2001}
 V.G. Tusher, R.~Tisbhirani, and G.~Chu.
 \newblock Significance analysis of microarrays applied to ionizing radiation
   response.
 \newblock {\em Proc. Nat. Acad. Sci.}, 98(9):5116--5121, April 2001.
+
+\bibitem{Tibshirani2002}
+R.~Tibshirani et~al.
+\newblock Diagnosis of multiple cancer types by shrunken centroids of gene
+  expression.
+\newblock {\em Proc. Nat. Acad. Sci.}, 99(10):6567--6572, 2002.
+
+\bibitem{HastieElementsChapter6}
+T.~Hastie, R.~Tibshirani, and J.~Friedman
+\newblock {\em The Elements of Statistical Learning. Chapter 6}.
+\newblock Springer Verlag, New York, 2001.
+
+\bibitem{HastieElementsChapter7}
+T.~Hastie, R.~Tibshirani, and J.~Friedman
+\newblock {\em The Elements of Statistical Learning. Chapter 7}.
+\newblock Springer Verlag, New York, 2001.
+
+\bibitem{Alitalo}
+K.~Alitalo, M.~Schwab, C.~Lin, H.E. Varmus, and J.M. Bishop.
+\newblock Homogeneously staining chromosomal regions contain amplified copies
+  of an abundantly expressed cellular oncogene (c-myc) in malignant
+  neuroendocrine cells from a human colon carcinoma.
+\newblock {\em Proc. Nat. Acad. Sci.}, 80:1707--1711, 1983.
 
 \bibitem{wiemels}
 J.~L. Wiemels, B.~C. Leonard, Y.~Wang, M.~R. Segal, S.~P. Hunger, M.~T. Smith,
@@ -582,7 +640,24 @@ J.~L. Wiemels, B.~C. Leonard, Y.~Wang, M.~R. Segal, S.~P. Hunger, M.~T. Smith,
   t(1;19) e2a-pbx1 fusion in childhood acute lymphoblastic leukemia.
 \newblock {\em Proc. Nat. Acad. Sci.}, 99:15101--15106, 2002.
 
-\end{thebibliography}
+\bibitem{kamps}
+M.~P. Kamps, A.~T. Look, and D.~Baltimore.
+\newblock The human t(1:19) translocation in pre-b all produces multiple
+  nuclear e2a-pbx1 fusion proteins with differing transforming potentials.
+\newblock {\em Genes Dev.}, 5:358--368, 1991.
 
+\bibitem{sarkar}
+S.~Sarkar, B.~C. Roy, N.~Hatano, T.~Aoyagi, K.~Gohji, and R.~Kiyama.
+\newblock A novel ankyrin repeat-containing gene (kank) located at 9p24 is a
+  growth suppressor of renal cell carcinoma.
+\newblock {\em J. Biol. Chem.}, 277:36585--36591, 2002.
+
+\bibitem{omim}
+V.A. McKusick.
+\newblock {\em Mendelian Inheritance in Man. A Catalog of Human Genes and
+  Genetic Disorders}.
+\newblock Johns Hopkins University Press, Baltimore, 12 edition, 1982.
+
+\end{thebibliography}
 
 \end{document}

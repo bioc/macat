@@ -1,23 +1,20 @@
 Package: macat
-Title: MicroArray Chromosomal Aberration Tool
-Version: 1.0.1
-Date: 2004-11-04
-Author: Benjamin Georgi, Matthias Heinig, Sebastian Schmeier, Joern
-        Toedling
+Title: MicroArray Chromosome Analysis Tool
+Version: 1.1
+Date: 2004-11-09
+Author: Benjamin Georgi, Matthias Heinig, Stefan Roepcke, Sebastian Schmeier, Joern Toedling
 Depends: Biobase, annotate
 Suggests: stjudem
 Description: This library contains functions to investigate links
         between differential gene expression and the chromosomal
         localization of the genes. MACAT is motivated by the common
-        observation of chromosomal aberrations in tumor cells. The
-        basic idea is to define tumor subtypes by characteristic
-        patterns of aberrations. These patterns might be useful for
-        classification of new tumor samples. The predictive power of
-        patterns found can be evaluated by writing scores to text
-        files, which can be used with Hidden-Markov-Models in Python.
+        observation of phenomena involving large chromosomal regions
+        in tumor cells. MACAT is the implementation of a statistical
+        approach for identifying significantly differentially expressed
+        chromosome regions.
         The functions have been tested on a publicly available data
         set about acute lymphoblastic leukemia (Yeoh et al.Cancer Cell
         2002), which is provided in the library 'stjudem'.
 Maintainer: Joern Toedling <toedling@molgen.mpg.de>
 License: GPL
-Packaged: Mon Nov  8 17:08:40 2004; toedling
+Packaged: Fri Nov 12 16:31:45 2004; toedling

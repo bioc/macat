@@ -1,6 +1,6 @@
 # scoring function for differential expression
 
-scoring <- function(data,labels,method="SAM",pcompute="tdist",nperms=1000,memory.limit=TRUE){
+scoring <- function(data,labels,method="SAM",pcompute="tdist",nperms=1000,memory.limit=TRUE,verbose=TRUE){
   # data: matrix with rows=genes and columns=samples
   # labels: vector or factor of two group labels
   # nperms: number of permutations
@@ -91,18 +91,18 @@ scoring <- function(data,labels,method="SAM",pcompute="tdist",nperms=1000,memory
     return(stat)
   }# tscoremat
     
-  cat("Compute observed test statistics...\n")
+  if (verbose) cat("Compute observed test statistics...\n")
   observed.scores <- tscore(data,binlabels,test=method)
 
   
   ### 3. Compute p-values for observed scores: ###
   if (pcompute=="empirical"){    
-    cat("Building permutation matrix...\n")
+    if (verbose) cat("Building permutation matrix...\n")
     perms <- matrix(nrow=nperms,ncol=ncol(data))
     for (i in 1:nperms){  # build matrix of permuted class-labels
       perms[i,] <- sample(binlabels)
     }#for
-    cat(paste("Compute",nperms,"permutation test statistics...\n"))
+    if (verbose) cat(paste("Compute",nperms,"permutation test statistics...\n"))
     # compute scores for permuted class-labels:
     if (memory.limit){# use tscoremat but only 250 permutations at once because of memory
       perm.scores <- matrix(nrow=nrow(data),ncol=nperms)
@@ -110,13 +110,13 @@ scoring <- function(data,labels,method="SAM",pcompute="tdist",nperms=1000,memory
       while (startcol < nperms){
         endcol <- min(nperms,startcol+249)      
         perm.scores[,startcol:endcol] <- tscoremat(data,t(perms)[,startcol:endcol],test=method)
-        cat(endcol,"...")
+        if (verbose) cat(endcol,"...")
         startcol <- startcol+250
       } # while (startcol < nperms)
     } else 
        perm.scores <- tscoremat(data,t(perms),test=method)
     
-    cat("\nCompute empirical p-values...\n")
+    if (verbose) cat("\nCompute empirical p-values...\n")
     # how many permutation scores are absolutely greater or equal
     #  than the respective observed score?
     pvalues <- rowSums(abs(perm.scores) >= matrix(abs(observed.scores),nrow=ngenes,ncol=nperms,byrow=FALSE))/nperms
@@ -137,14 +137,14 @@ scoring <- function(data,labels,method="SAM",pcompute="tdist",nperms=1000,memory
       } #else
       return(adjustedp)
     } #pval    
-    cat("Computing p-values from t-distribution.\n")
+    if (verbose) cat("Computing p-values from t-distribution.\n")
     pvalues <- pval(observed.scores,t.df=ncol(data)-2)
   } else if (pcompute=="none") {
     pvalues <- rep(NA,length(observed.scores))
   } # ifelse pcompute
 
   ### 4. prepare and return result: ###
-  cat("Compute quantiles of empirical distributions...")
+  if (verbose) cat("Compute quantiles of empirical distributions...")
   # return quantiles of permuted score matrix as borders for expected scores:
   if (pcompute=="empirical") {
     expected.borders <- apply(perm.scores,1,quantile,probs=c(0.025,0.975))
@@ -165,6 +165,6 @@ scoring <- function(data,labels,method="SAM",pcompute="tdist",nperms=1000,memory
 
   result <- list(observed=observed.scores, pvalues=pvalues,
                  expected.lower=expected.lower,expected.upper=expected.upper)
-  cat("Done.\n")
+  if (verbose) cat("Done.\n")
   return(result)  
 } #scoring

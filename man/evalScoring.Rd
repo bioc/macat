@@ -12,9 +12,10 @@
   regions.
 }
 \usage{
-evalScoring(data, class, chromosome,nperms = 1000,permute = "labels",
-	  subset = NULL, newlabels = NULL, kernel = rbf, kernelparams = NULL,
-	  step.width = 1e+05, memory.limit = TRUE)
+evalScoring(data,class,chromosome,nperms=1000,permute="labels",subset=NULL,
+     newlabels=NULL,kernel=rbf,kernelparams=NULL,cross.validate=TRUE,
+     paramMultipliers=2^(-4:4),ncross=10,step.width=100000,
+     memory.limit=TRUE)
 }
 \arguments{
   \item{data}{Gene expression data in the MACAT list format. See data(stjude)
@@ -39,11 +40,17 @@ evalScoring(data, class, chromosome,nperms = 1000,permute = "labels",
   \item{kernelparams}{Additional parameters for the kernel as list, e.g., 
 	kernelparams=list(k=5) for taking the 5 nearest neighbours in the
 	kNN-kernel. If NULL some defaults are set within the function.}
+  \item{cross.validate}{Logical. Should the paramter settings for the kernel
+	function be optimized by a cross-validation?}
+  \item{paramMultipliers}{Numeric vector. If you do cross-validation of the 
+	kernel parameters, specify the multipliers of the given (standard)
+	parameters to search over for the optimal one.}
+  \item{ncross}{Integer. If you do cross-validation, specify how many folds.}
   \item{step.width}{Defines the resolution of smoothed scores on the
-	chromosome, is in fact the distance in bp between 2 positions, for
-	which smoothed scores are to be calculated.}
-  \item{memory.limit}{If you have a really good computer with lots of RAM,
-	setting this FALSE will increase speed of computations.}
+	chromosome, is in fact the distance in base pairs  between 2 
+          positions, for which smoothed scores are to be calculated.}
+  \item{memory.limit}{If you have a computer with lots of RAM,
+	setting this to FALSE will increase speed of computations.}
 }
 
 \details{See the documentation for detailed theory and explanations  of this functions.}

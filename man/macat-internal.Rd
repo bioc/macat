@@ -1,6 +1,5 @@
 \name{Auxiliary Computation Functions}
-\alias{euclidian}
-\alias{norm2}
+\alias{squaredDist}
 \alias{maxDistances}
 \alias{pair.distances}
 \alias{toPython}
@@ -13,6 +12,8 @@
 \alias{getExpression.MACATData}
 \alias{getExpressionByProbeset.MACATData}
 \alias{demo.part}
+\alias{crossvalParam}
+\alias{evalParams}
 
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{Auxiliary Functions for Computations in MACAT}

@@ -1,5 +1,5 @@
 .First.lib <- function(libname, pkgname){
-  cat("Loading MicroArray Chromosomal Aberration Tools...\n")
+  cat("Loading MicroArray Chromosome Analysis Tool...\n")
   cat("Loading required packages...\n")
   require(Biobase,quietly=TRUE)
   require(annotate,quietly=TRUE)

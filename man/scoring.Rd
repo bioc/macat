@@ -10,7 +10,7 @@
 }
 \usage{
 scoring(data, labels, method = "SAM", pcompute = "tdist", 
-        nperms = 1000, memory.limit = TRUE)
+        nperms = 1000, memory.limit = TRUE, verbose = TRUE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -26,6 +26,7 @@ scoring(data, labels, method = "SAM", pcompute = "tdist",
 	argument 'pcompute="empirical"'}
   \item{memory.limit}{Logical, if you have a really good computer (>2GB RAM), 
 	setting this FALSE will increase speed of computations}
+  \item{verbose}{Logical, if progress should be reported to STDOUT}
 }
 \details{
   If 'pcompute="empirical"', the statistic is computed based on the given class

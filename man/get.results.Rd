@@ -35,7 +35,8 @@ get.results(MACATevalScoringOBJ)
 \seealso{\code{\link{evalScoring}}}
 \examples{
 loaddatapkg("stjudem")
-myevalres <- evalScoring(stjude, class="T", chromosome=6, nperms=10) 
+myevalres <- evalScoring(stjude, class="T", chromosome=6, nperms=10,
+                         cross.validate=FALSE) 
 results <- get.results(myevalres)
 summary(results)
 results$probeID[1:20]
