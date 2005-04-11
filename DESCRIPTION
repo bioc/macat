@@ -15,6 +15,5 @@ Description: This library contains functions to investigate links
         The functions have been tested on a publicly available data
         set about acute lymphoblastic leukemia (Yeoh et al.Cancer Cell
         2002), which is provided in the library 'stjudem'.
-Maintainer: Joern Toedling <toedling@molgen.mpg.de>
-License: GPL
-Packaged: Fri Nov 12 16:31:45 2004; toedling
+Maintainer: Joern Toedling <toedling@ebi.ac.uk>
+License: GPL version 2.0 or newer

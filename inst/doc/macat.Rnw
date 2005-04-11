@@ -1,5 +1,5 @@
 %\VignetteIndexEntry{MicroArray Chromosome Analysis Tool}
-%\VignetteDepends{graphics,Biobase,annotate,reposTools}
+%\VignetteDepends{graphics,Biobase,annotate}
 %\VignetteKeywords{microarray chromosome differential gene expression}
 %\VignettePackage{macat}
 
