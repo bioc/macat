@@ -48,7 +48,7 @@ tabfile = FALSE, labelfile = FALSE)
  hgu133a, hgu133b, mgu74av2, mgu74bv2, mgu74c, moe430a, 
  moe430b, rae230a, rae230b, rgu34a, rgu34b, rgu34c
 }
-\seealso{\code{\link{buildMACAT}},\code{\link[base]{read.table}},\code{\link[stjudem]{stjude}} in package 'stjudem'}
+\seealso{\code{\link{buildMACAT}},\code{\link[base]{read.table}},\code{\link{stjd}},\code{\link[stjudem]{stjude}} in package 'stjudem'}
 \examples{
  \dontrun{
   # assume you have your HG-U95Av2 expression values in a

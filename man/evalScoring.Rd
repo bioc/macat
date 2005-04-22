@@ -83,23 +83,19 @@ evalScoring(data,class,chromosome,nperms=1000,permute="labels",subset=NULL,
 }
 \examples{
    
-    loaddatapkg("stjudem")
+    #loaddatapkg("stjudem")
+    data(stjd)
 
-    # BCR-ABL positive versus BCR-ABL negative on chromosome 9, 
-    #  smoothed with radial basis kernel, few permutations for speed
-    chrom9BCRrbf <- evalScoring(stjude,"BCR",chromosome=9,permute="labels",
-    nperms=100,kernel=rbf,step.width=100000)
-
-    # T-lymphocyte versus B-lymphocyte on X-chromosome, 
+    # T-lymphocyte versus B-lymphocyte on chromosome 1, 
     #  smoothed with k-Nearest-Neighbours kernel(k=15), 
     #  few permutations for higher speed
-    chromXTknn <- evalScoring(stjude,"T",chromosome="X",permute="labels",
+    chrom1Tknn <- evalScoring(stjd,"T",chromosome="1",permute="labels",
     nperms=100,kernel=kNN,kernelparams=list(k=15),step.width=100000)
 
     # plotting on x11:
-    plot(chrom9BCRrbf)
+    plot(chrom1Tknn)
 
     # plotting on HTML:
-    plot(chromXTknn,"html")
+    plot(chrom1Tknn,"html")
 }
 \keyword{manip}% at least one, from doc/KEYWORDS

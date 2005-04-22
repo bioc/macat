@@ -41,10 +41,10 @@ kernelize(values, kernelweights)
 
 \seealso{ \code{\link{compute.sliding}}, \code{\link{evalScoring}} }
 \examples{
-  loaddatapkg("stjudem")
+  data(stjd)
   genes = seq(100)
-  geneLocations = abs(stjude$geneLocation[genes])
-  geneExpression = stjude$expr[genes,]
+  geneLocations = abs(stjd$geneLocation[genes])
+  geneExpression = stjd$expr[genes,]
   step.width = 100000
   steps = getsteps(geneLocations, step.width)
   weights = kernelmatrix(steps, geneLocations, rbf, list(gamma=1/10^13))

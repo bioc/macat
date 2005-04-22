@@ -1,7 +1,6 @@
 \name{discretize.tscores}
 \alias{discretize.tscores}
 \alias{discretizeAllClasses.tscores}
-%- Also NEED an '\alias' for EACH other topic documented here.
 \title{Discretize regularized t-scores}
 \description{
   discretize.tscores returns a discretized version of the scores in the MACATevalScoring object.
@@ -34,17 +33,13 @@ discretizeAllClasses.tscores(data, chrom, nperms=10, kernel=rbf, kernelparams=NU
 	\item{discretize.tscores}{ a vector of discretized tscores }
 	\item{discretizeAllClasses.tscores}{ creates python flatfiles (see details) }
 }
-%\references{ }
 \author{  The MACAT development team }
-%\note{  }
-
 \seealso{ \code{\link{evalScoring}}, \code{\link{kernels}}, \code{\link{pythondata}}}
 \examples{
-  loaddatapkg("stjudem")
-  scores = evalScoring(stjude, "MLL", 13, nperms=100)
+  #loaddatapkg("stjudem")
+  data(stjd)
+  # simple scoring with short running time
+  scores = evalScoring(stjd, "T", 1, nperms=100, cross.validate=FALSE)
   discrete = discretize.tscores(scores)
 }
 \keyword{manip}% at least one, from doc/KEYWORDS
-
-
-

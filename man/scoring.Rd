@@ -57,10 +57,10 @@ scoring(data, labels, method = "SAM", pcompute = "tdist",
 \seealso{\code{\link{evalScoring}}}
 \examples{
  \dontrun{
-  loaddatapkg("stjudem")
+  data(stjd)
   # compute scores for T- vs. B-lymphocyte ALL:
-  isT <- as.numeric(stjude$labels=="T")
-  TvsB <- scoring(stjude$expr,isT,method="SAM",pcompute="empirical",nperms=100)
+  isT <- as.numeric(stjd$labels=="T")
+  TvsB <- scoring(stjd$expr,isT,method="SAM",pcompute="empirical",nperms=100)
   summary(TvsB$observed)
  }
 }

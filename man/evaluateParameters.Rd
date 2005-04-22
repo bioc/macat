@@ -52,8 +52,8 @@ evaluateParameters(data, class, chromosome, kernel, kernelparams = NULL,
 \author{MACAT development team}
 \seealso{\code{\link{evalScoring}}}
 \examples{
-loaddatapkg("stjudem")
-evalkNN6 <- evaluateParameters(stjude, class="T", chromosome=6,kernel=kNN, 
+data(stjd)
+evalkNN6 <- evaluateParameters(stjd, class="T", chromosome=6,kernel=kNN, 
                                paramMultipliers=c(0.01,seq(0.2,2.0,0.2),2.5))
 plot(evalkNN6)
 }

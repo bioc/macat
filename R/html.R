@@ -25,7 +25,7 @@ myhtml <- function (genelist, chrom, SLIDINGpic, CHROMpic, filename, mytitle, ot
     #---------------------------------------------
     # here the pictures
     
-    cat("<img src=\"",SLIDINGpic,"\" width=\"\" height=\"\" alt=\"\" border=\"0\">\n", sep="",file = outfile)
+    cat("<img src=\"",SLIDINGpic,"\" alt=\"\" border=\"0\">\n", sep="",file = outfile)
 
     # adjust pic parameter for chromosom
     st="\"margin-left:70px; margin-top:0px\""
@@ -102,6 +102,9 @@ get.html <- function(MACATevalScoringOBJ, SLIDINGpic, HTMLfilename, mytitle){
    }
    path=getwd()
    html = paste(path, "/", HTMLfilename, sep="" )
+   slidepic <-  paste(path, "/", SLIDINGpic, sep="" )
+   system(paste("chmod 0744",slidepic))
+   system(paste("chmod 0744",html))
    browseURL(html)
 } # get.html
 

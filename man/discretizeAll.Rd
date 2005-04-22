@@ -23,16 +23,14 @@ discretizeAll(data, margin = 10)
 \value{
   produces python flat file
 }
-%\references{ }
 \author{ The MACAT Development team }
-%\note{ }
-
 \seealso{ \code{\link{discretize}} }
 \examples{ 
  # !!! takes some time !!!
  \dontrun{
-  loaddatapkg("stjudem")
-  discretizeAll(stjude, margin=10) 
+  #loaddatapkg("stjudem")
+  data(stjd)
+  discretizeAll(stjd, margin=10) 
  }
 }
 \keyword{manip}% at least one, from doc/KEYWORDS

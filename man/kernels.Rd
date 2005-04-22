@@ -39,9 +39,9 @@ For internal use by other MACAT-functions. Not called by user.
 \author{MACAT development team}
 \seealso{\code{\link{evalScoring}, \link{compute.sliding}, \link{kernelize}}}
 \examples{
-  loaddatapkg("stjudem")
+  data(stjd)
   genes = seq(100)
-  geneLocations = abs(stjude$geneLocation[genes])
+  geneLocations = abs(stjd$geneLocation[genes])
   position = c(1000) # location for which you want the kernelweights
   kernelweights = rbf(as.matrix(geneLocations), as.matrix(position), 
   		      list(gamma=1/10e13))

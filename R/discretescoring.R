@@ -1,15 +1,18 @@
 
 discretize.tscores <- function(scores) {
   attach(scores)
+  sliding.value <- as.vector(sliding.value)
+  upper.permuted.border <- as.vector(upper.permuted.border)
+  lower.permuted.border <- as.vector(lower.permuted.border)
+  detach(scores)
   isUp <- (sliding.value > upper.permuted.border)
   isDown <- (sliding.value < lower.permuted.border)
   isZero <- ((sliding.value < upper.permuted.border) &
              (sliding.value > lower.permuted.border))
-  discrete = rep(0, length(sliding.value))
+  discrete = numeric(length(sliding.value))
   discrete[isUp] = 1
   discrete[isDown] = -1
   discrete[isZero] = 0
-  detach(scores)
   return(discrete)
 }
 

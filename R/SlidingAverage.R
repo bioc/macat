@@ -51,7 +51,7 @@ basePairDistance <- function(geneLocations, position, params=(distance = 1000000
 }
 
 #--------------------------------------------------------------------------
-plotSliding <- function(data, chromosome, sample, kernel, kernelparams=NULL, step.width=1000000) {
+plotSliding <- function(data, chromosome, sample, kernel, kernelparams=NULL, step.width=1000000,...) {
   if (is.null(kernelparams))
     kernelparams=fitkernelparams(data,chromosome,kernel)
   # find expressions of the used genes on the chromosome for the sample
@@ -72,7 +72,7 @@ plotSliding <- function(data, chromosome, sample, kernel, kernelparams=NULL, ste
   sliding.value = points[,2]
   if (interactive() && capabilities()["X11"])
     x11(width=10, height=6)
-  print(plot(genes, expr, "p", ylab="Expression", xlab="Coordinate", main="Sliding Average", ylim=c(min(c(expr, sliding.value,0)), max(expr, sliding.value))))
+  print(plot(genes, expr, "p", ylab="Expression", xlab="Coordinate", ylim=c(min(c(expr, sliding.value,0)), max(expr, sliding.value)),...))
   lines(steps, sliding.value, col="red",lwd=2)
 } # plotSliding
 

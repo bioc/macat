@@ -37,8 +37,9 @@ discreteKernelize(data, chrom, margin = 10, step.width = 1e+05, kernel = rbf,
 
 \seealso{\code{\link{pydata}}, \code{\link{kernelizeAll}} }
 \examples{
-   loaddatapkg("stjudem")
-   discretizedKernelized = discreteKernelize(stjude, 13)
+   #loaddatapkg("stjudem")
+   data(stjd)
+   discretizedKernelized = discreteKernelize(stjd, 13)
 }
 \keyword{ manip }% at least one, from doc/KEYWORDS
 

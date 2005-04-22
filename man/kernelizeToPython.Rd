@@ -35,8 +35,8 @@ kernelizeToPython(data, chrom, step.width = 1e+05, kernel = rbf,
 
 \seealso{ \code{\link{pydata}}, \code{\link{kernelizeAll}} }
 \examples{
-  loaddatapkg("stjudem")
-  kernelized = kernelizeToPython(stjude, 3)
+  data(stjd)
+  kernelized = kernelizeToPython(stjd, 3)
 }
 \keyword{ manip }% at least one, from doc/KEYWORDS
 

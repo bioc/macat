@@ -11,7 +11,7 @@ is also used within the 'evalScoring' function.
 }
 \usage{
 compute.sliding(data, chromosome, sample, kernel, kernelparams=NULL, step.width = 1e+06)
-plotSliding(data, chromosome, sample, kernel, kernelparams=NULL, step.width=1000000)
+plotSliding(data, chromosome, sample, kernel, kernelparams=NULL, step.width=1000000,...)
 }
 \arguments{
   \item{data}{ A MACATData list holding the Expression values and gene locations}
@@ -21,6 +21,7 @@ plotSliding(data, chromosome, sample, kernel, kernelparams=NULL, step.width=1000
   \item{kernelparams}{ a list of named parameters for the kernel (by default estimated from the data) }
   \item{step.width}{ the smoothing is computed stepwise every step.width basepairs 
   (default is 100000) }
+  \item{...}{futher graphical parameters passed on to \code{plot}}
 }
 \details{
 }
@@ -36,8 +37,13 @@ plotSliding(data, chromosome, sample, kernel, kernelparams=NULL, step.width=1000
 
 \seealso{ \code{\link{kernelize}}, \code{\link{evalScoring}} }
 \examples{
-  loaddatapkg("stjudem")
-  smooth = compute.sliding(stjude, chromosome=3, sample=6, rbf, kernelparams=list(gamma=1/10^13))
-  plotSliding(stjude, chromosome=3, sample=6, rbf, kernelparams=list(gamma=1/10^13))
+data(stjd)
+# just compute smoothed values:
+smooth = compute.sliding(stjd, chromosome=3, sample=6, rbf,
+                         kernelparams=list(gamma=1/10^13))
+# compute and plot smoothed values:
+plotSliding(stjd, chromosome=3, sample=6,rbf,
+            kernelparams=list(gamma=1/10^13),pch=20,
+            main="Chromosome 3")
 }
 \keyword{ manip }

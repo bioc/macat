@@ -8,8 +8,8 @@
   } # if data package not installed
   cat("Type 'demo(macatdemo)' for a quick tour...\n")
   
-  if(.Platform$OS.type=="windows" && require(Biobase) && interactive() && .Platform$Gui=="Rgui"){
-    addPDF2Vig("macat")
+  if(.Platform$OS.type=="windows" && require(Biobase) && interactive() && .Platform$GUI=="Rgui"){
+    addVigs2WinMenu("macat")
   }
 } # .First.lib
 
