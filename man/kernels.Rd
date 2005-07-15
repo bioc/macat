@@ -14,7 +14,7 @@
 \usage{
 kNN(geneLocations, position, params)
 rbf(geneLocations, position, params = list((gamma=1/10^13)))
-basePairDistance(geneLocations, position, params = (distance = 1e+06)))
+basePairDistance(geneLocations, position, params = list(distance = 1e+06)))
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -27,7 +27,7 @@ basePairDistance(geneLocations, position, params = (distance = 1e+06)))
 		\item{basePairDistance:}{distance = distance within which all
 		genes are averaged }
 	}
-	}
+      }
 }
 \details{
 For internal use by other MACAT-functions. Not called by user.
