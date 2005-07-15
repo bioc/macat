@@ -51,27 +51,18 @@ basePairDistance <- function(geneLocations, position, params=(distance = 1000000
 }
 
 #--------------------------------------------------------------------------
-plotSliding <- function(data, chromosome, sample, kernel, kernelparams=NULL, step.width=1000000,...) {
+plotSliding <- function(data, chromosome, sample, kernel, kernelparams=NULL, step.width=1000000, ...) {
   if (is.null(kernelparams))
     kernelparams=fitkernelparams(data,chromosome,kernel)
   # find expressions of the used genes on the chromosome for the sample
-  expr = numeric()
-  genes = numeric()
-  #genesOnChrom = data[data$chromosome == chromosome,] #alter data frame
   genesOnChromIndex <- which(data$chromosome == chromosome)
   genesOnChrom <- data$geneName[genesOnChromIndex]
-  
   # take the abs because we dont care on which strand the genes lie
-  #genes = abs(as.numeric(genesOnChrom$geneLocation))  #alter data frame
-  #expr = genesOnChrom[,(length(infoColumns) + sample)] #alter data frame
   genes <- abs(data$geneLocation[genesOnChromIndex])
   expr <- data$expr[genesOnChrom,sample]
-  
   points = compute.sliding(data, chromosome, sample, kernel, kernelparams, step.width)
   steps = points[,1]
   sliding.value = points[,2]
-  if (interactive() && capabilities()["X11"])
-    x11(width=10, height=6)
   print(plot(genes, expr, "p", ylab="Expression", xlab="Coordinate", ylim=c(min(c(expr, sliding.value,0)), max(expr, sliding.value)),...))
   lines(steps, sliding.value, col="red",lwd=2)
 } # plotSliding
@@ -81,9 +72,6 @@ compute.sliding <- function(data, chromosome, sample, kernel, kernelparams=NULL,
   if (is.null(kernelparams))
     kernelparams=fitkernelparams(data,chromosome,kernel)
   # find expressions of the used genes on the chromosome for the sample
-  #expr = numeric()
-  #genes = numeric()
-  #genesOnChrom = data[data$chromosome == chrom,]  #alter data frame
   genesOnChromIndex <- which(data$chromosome == chromosome)
   genesOnChrom <- data$geneName[genesOnChromIndex]
   

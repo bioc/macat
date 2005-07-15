@@ -15,7 +15,7 @@
   \item{output}{plot "x11" or create a "html" -file with further information. HTML-page will open automatically.}
   \item{HTMLfilename}{HTML-filename, default:\code{Results<CHOMOSOME>_<CLASS>.html}}
   \item{mytitle}{Title of HTML-page, default: \dQuote{Results of class <CLASS> on chromosome <CHROMOSOME>}}
-  \item{new.device}{if FALSE: Posibility to plot several plots in one device}
+  \item{new.device}{if FALSE: Possibility to plot several plots in one device}
   \item{...}{further arguments passed on to generic function \code{plot}}
 }
 \details{
@@ -31,9 +31,7 @@
 
 \seealso{\code{\link{evalScoring}}, \code{\link{get.results}}}
 \examples{
- \dontrun{
- # see \code{\link{evalScoring}} for an example
- }
+ # see function 'evalScoring' for an example
 }
 
 \keyword{hplot}% at least one, from doc/KEYWORDS
