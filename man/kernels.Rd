@@ -13,8 +13,8 @@
 }
 \usage{
 kNN(geneLocations, position, params)
-rbf(geneLocations, position, params = list((gamma=1/10^13)))
-basePairDistance(geneLocations, position, params = list(distance = 1e+06)))
+rbf(geneLocations, position, params = list(gamma=1/10^13))
+basePairDistance(geneLocations, position, params = list(distance = 1e+06))
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
