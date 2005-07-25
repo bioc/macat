@@ -6,7 +6,7 @@ squaredDist <- function(x,y){
 } #squaredDist
 
 #--------------------------------------------------------------------------
-rbf <- function(geneLocations, position, params=list((gamma=1/10^13))) {
+rbf <- function(geneLocations, position, params=list(gamma=1/10^13)) {
   # radial basis function kernel for x, y
   # params is a named list: gamma is the width of the kernel
   # default value of gamma (variance) is chosen such that the standard
@@ -35,20 +35,19 @@ kNN <- function(geneLocations, position, params) {
 } #kNN
 
 #--------------------------------------------------------------------------
-basePairDistance <- function(geneLocations, position, params=(distance = 1000000)) {
+basePairDistance <- function(geneLocations, position, params = list(distance = 1000000)) {
   # gene is a gene coordinate in basepairs
-  # x is the position around which you want to find all neighbours within distance
+  # x: position around which you want to find all neighbours within distance
   # returns 1 if gene is within distance from x
-  distance = params$distance;
+  distance = params$distance
   kernel <- function(geneLocation, position, distance){
-     if (abs(geneLocation - position) < distance) {
-       return(1)
-     }
-     return(0)
+    if (abs(geneLocation - position) < distance) {
+      return(1)
+    }
+    return(0)
   }
   return(apply(geneLocations, 1, kernel, position, distance))
- 
-}
+}#basePairDistance
 
 #--------------------------------------------------------------------------
 plotSliding <- function(data, chromosome, sample, kernel, kernelparams=NULL, step.width=1000000, ...) {
