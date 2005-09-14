@@ -18,6 +18,7 @@ Description: This library contains functions to investigate links
         the library 'stjudem'.
 Maintainer: Joern Toedling <toedling@ebi.ac.uk>
 License: GPL version 2 or newer
+biocViews: Microarray, DifferentialExpression, Visualization
 Referenence: Toedling J, Schmeier S, Heinig M, Georgi B, Roepcke S (2005).
 	MACAT - MicroArray Chromosome Analysis Tool.
 	Bioinformatics. 21(9):2112--2113.
