@@ -15,12 +15,17 @@
 preprocessedLoader <- function(rdatafile,chip,labels=NULL,rdafile=TRUE,tabfile=FALSE,labelfile=FALSE) {
   # file: is first argument  a file or the expression matrix
   require(annotate)
-  acceptedChips <-  c("hu6800","hgu95av2","hgu95b","hgu95c","hgu95d","hgu95e",
-                      "hgu133a","hgu133b","mgu74av2","mgu74bv2","mgu74c",
-                      "moe430a","moe430b","rae230a","rae230b","rgu34a",
-                      "rgu34b","rgu34c")
-  if (!(chip %in% acceptedChips))
-    stop(paste("Unknown Chip!! Chip must be one of '",paste(acceptedChips,collapse="', '"),"'!\n",sep=""))
+  #acceptedChips <-  c("hu6800","hgu95av2","hgu95b","hgu95c","hgu95d","hgu95e",
+  #                    "hgu133a","hgu133b","mgu74av2","mgu74bv2","mgu74c",
+  #                    "moe430a","moe430b","rae230a","rae230b","rgu34a",
+  #                    "rgu34b","rgu34c")
+  loadChip <- require(chip, character.only=TRUE, quiet=TRUE)
+  if (!loadChip){
+    stop(paste("Unknown Chip! At present, MACAT can only deal with chips, for which there",
+               "exists an installed BioConductor annotation data package, such as 'hgu95av2'.",
+               "The chip type must be specified using the name of this annotation package,",
+               "e.g., for the Human Genome 95 A version 2 chip: 'hgu95av2'.\n", sep="\n"))
+  }
   cat("Reading expression matrix...\n")
   if ((!rdafile)&(!tabfile)) # is m already a matrix?
     m <- as.matrix(rdatafile)
