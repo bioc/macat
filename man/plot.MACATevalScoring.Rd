@@ -29,7 +29,7 @@
 %\note{ ~~further notes~~ }
 
 
-\seealso{\code{\link{evalScoring}}, \code{\link{get.results}}}
+\seealso{\code{\link{evalScoring}}, \code{\link{getResults}}}
 \examples{
  # see function 'evalScoring' for an example
 }

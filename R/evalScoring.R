@@ -167,7 +167,7 @@ plot.MACATevalScoring <- function(x, output="x11", HTMLfilename=NULL, mytitle=NU
   if (output=="html"){
     dev.off()
     ####
-    get.html(x, Slidingpic, HTMLfilename, mytitle)
+    getHtml(x, Slidingpic, HTMLfilename, mytitle)
   }
   detach(x)
 } # plot.MACATevalScoring

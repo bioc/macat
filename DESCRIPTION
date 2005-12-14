@@ -1,7 +1,7 @@
 Package: macat
 Title: MicroArray Chromosome Analysis Tool
-Version: 1.5.0
-Date: 2005-08-01
+Version: 1.5.1
+Date: 2005-12-14
 Author: Benjamin Georgi, Matthias Heinig, Stefan Roepcke, Sebastian
         Schmeier, Joern Toedling
 Depends: Biobase, annotate

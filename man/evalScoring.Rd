@@ -79,7 +79,7 @@ evalScoring(data,class,chromosome,nperms=1000,permute="labels",subset=NULL,
 \author{MACAT development team}
 %\note{}
 \seealso{\code{\link{scoring}},\code{\link{plot.MACATevalScoring}},
-	\code{\link{get.results}}
+	\code{\link{getResults}}
 }
 \examples{
    

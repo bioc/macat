@@ -1,46 +1,60 @@
-\name{get.results}
-\alias{get.results}
+\name{getResults}
+\alias{getResults}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{Access results of 'evalScoring'}
 \description{
-  Function returns a list with important information
-  about significant chromosome stretches depending on
-  a \code{MACATevalScoring} object.
+  This function processes the result of the \code{evalScoring} function
+  and returns a list of probe sets within chromosome regions deemed
+  significant by MACAT. Additional annotation for these probe sets is
+  provided along with their IDs}
 }
 \usage{
-get.results(MACATevalScoringOBJ)
+getResults(MACATevalScoringOBJ)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{MACATevalScoringOBJ}{MACATevalScoring object}
-  }
+  \item{MACATevalScoringOBJ}{Object of class \code{MACATevalScoring},
+    usually the result from \code{evalScoring}}
 }
-\details{
-  Result function for MACATevalScoring object.
-}
+
 \value{
-  \item{probeID}{Probeset IDs for genes.}
-  \item{cytoband}{Cytobands for probeIDs.}
-  \item{geneSYM}{GeneSymbol for probeIDs.}
-  \item{pvalue}{pValues for probeIDs.}
-  \item{locusid}{locusIDs for probeIds.}
-  \item{genedescription}{Genedescription for probeIDs.}
-  \item{chromosome}{Considered chromosome.}
-  \item{class}{Class of the experiments.}
+  A list with the following components, describing probe sets within
+  chromosome regions deemed significant:
+  \item{probeID}{IDs of probe sets within these chromosome regions}
+  \item{cytoband}{chromosomal bands these probe sets have been annotated
+  to}
+\item{geneSYM}{gene symbols these probe sets have been annotated to}
+  \item{pvalue}{p-values for probe sets; see details}
+  \item{locusid}{EntrezGene-(formerly LocusLink) IDs of these probe sets}
+  \item{genedescription}{Description of genes the probe sets have been
+    annotated to}
+  \item{probeScore}{the differential expression scores for the probe sets}
+  \item{chromosome}{chromosome, the analysis has been done for}
+  \item{class}{sample class, the analysis has been done for}
 }
 %\references{ ~put references to the literature/web site here ~ }
 \author{MACAT development team}
-%\note{ ~~further notes~~ }
+\details{
+  The p-values have been computed individually for probe sets (genes),
+  not for whole chromosome regions. Thus, regions deemed significant by
+  sliding window approach do not have to consist only of probe sets with
+  low p-values. These probe-set p-values are not used to determine
+  whether a region is considered significant or not. Instead the
+  comparison between actual and interpolated scores to actual and
+  interpolated boundaries determines whether a region is considered
+  significant.
 
+  This function is called within the plot function for the results of
+  \code{evalScoring}, when HTML output is desired.
+}
 \seealso{\code{\link{evalScoring}}}
 \examples{
 data(stjd)
 myevalres <- evalScoring(stjd, class="T", chromosome=6, nperms=10,
                          cross.validate=FALSE) 
-results <- get.results(myevalres)
+results <- getResults(myevalres)
 summary(results)
 results$probeID[1:20]
 }
-
 \keyword{manip}% at least one, from doc/KEYWORDS
 

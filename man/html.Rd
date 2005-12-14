@@ -1,6 +1,6 @@
 \name{html}
 \alias{myhtml}
-\alias{get.html}
+\alias{getHtml}
 
 
 %- Also NEED an '\alias' for EACH other topic documented here.

@@ -77,12 +77,12 @@ myhtml <- function (genelist, chrom, SLIDINGpic, CHROMpic, filename, mytitle, ot
 # SLIDINGpic: Has to be 'png' or 'jpeg'
 #
 ####################################################################################
-get.html <- function(MACATevalScoringOBJ, SLIDINGpic, HTMLfilename, mytitle){
+getHtml <- function(MACATevalScoringOBJ, SLIDINGpic, HTMLfilename, mytitle){
    # SLIDINGpic: PNG of the scoring slidingAverage
    # HTMLfilename: output html filename
    # mytitle: Title of HTMLpage
 
-   res=get.results(MACATevalScoringOBJ)
+   res=getResults(MACATevalScoringOBJ)
 
    # path for pics
    #chrompic=paste("http://macat.sourceforge.net/pics/ch",MACATevalScoringOBJ$chromosome,".png", sep="")
@@ -94,10 +94,10 @@ get.html <- function(MACATevalScoringOBJ, SLIDINGpic, HTMLfilename, mytitle){
             mytitle, table.head=head)
    }
    else {
-     head=c("LocusID", "ProbeID", "Cytoband", "GeneSYM", "GeneDescription", "p-Value")
+     head=c("LocusID", "ProbeSet ID", "Cytoband", "Gene Symbol", "Gene Description", "Score", "p-Value")
      mylocusid <- unlist(res$locusid)
      myhtml(mylocusid, res$chromosome, SLIDINGpic, chrompic , HTMLfilename,
-            mytitle, list(res$probeID, res$cytoband, res$geneSYM, res$genedescription,
+            mytitle, list(res$probeID, res$cytoband, res$geneSYM, res$genedescription, res$probeScore,
                         res$pvalue),table.head=head)
    }
    path=getwd()
@@ -106,16 +106,20 @@ get.html <- function(MACATevalScoringOBJ, SLIDINGpic, HTMLfilename, mytitle){
    system(paste("chmod 0744",slidepic))
    system(paste("chmod 0744",html))
    browseURL(html)
-} # get.html
+} # getHtml
 
 
 ####################################################################################
 # Functiopn returns a list with important information about interesting sides
 # on chromosome
 ####################################################################################
-get.results <- function(MACATevalScoringOBJ){
+getResults <- function(MACATevalScoringOBJ){
 
-   attach(MACATevalScoringOBJ)
+   stopifnot(inherits(MACATevalScoringOBJ,"MACATevalScoring")) # check class of object
+   
+   attach(MACATevalScoringOBJ, warn.conflicts=FALSE)
+   require(chip, character.only=TRUE)
+      
    step.width = steps[2] - steps[1]
    #----------------------------------------------
    # find all genes in significant regions
@@ -125,7 +129,6 @@ get.results <- function(MACATevalScoringOBJ){
    issig = ((sliding.value>upper.permuted.border)|(sliding.value<lower.permuted.border))
    
    interpolate <- function(i, loc, values){
-    
      y = values[i]+((values[i+1]-values[i])/(steps[i+1]-steps[i])) * (loc - steps[i])
      return(y)
    }
@@ -152,28 +155,52 @@ get.results <- function(MACATevalScoringOBJ){
      }
    }
   
-   genes <- unique(original.geneid[sig])
+   genes  <- original.geneid[sig]
    if (length(genes)==0){
      return(NULL)
    }
-   pvalues= original.pvalue[sig]
+   # now take care of genes annotated to more than one chromosomal position:
+   #  if they are annotated to the same chromosomal band, discard copies
+   areDuplicated <- duplicated(genes)
+   genesU <- genes[!areDuplicated]
    #-------------------------------------------
 
-   # look for interesting things for genes on chip
-   require(chip, character.only=TRUE)
-   e1=paste(chip, "GENENAME", sep="")
-   genedescription=mget(genes, env=eval(as.symbol(e1)))
-   e2=paste(chip, "LOCUSID", sep="") 
-   locusids=mget(genes, env=eval(as.symbol(e2)))
-   e3=paste(chip, "SYMBOL", sep="")
-   symbol=mget(genes, env=eval(as.symbol(e3)))
-   e4=paste(chip, "MAP", sep="")
-   cytoband=mget(genes, env=eval(as.symbol(e4)))
+   # collapse gene annotations for the same gene   
+   contractMultiple <- function(charVec) {
+     return(paste(charVec, collapse="; "))
+   }
+   
+   thisEnv = paste(chip, "GENENAME", sep="")
+   genedescription = mget(genesU, env=eval(as.symbol(thisEnv)))   
+   thisEnv = paste(chip, "LOCUSID", sep="") 
+   locusids=mget(genesU, env=eval(as.symbol(thisEnv)))
+   thisEnv=paste(chip, "SYMBOL", sep="")
+   symbol=mget(genesU, env=eval(as.symbol(thisEnv)))
+   thisEnv=paste(chip, "MAP", sep="")
+   cytoband=mget(genesU, env=eval(as.symbol(thisEnv)))
+   #bandsAnnotated <- listLen(cytoband)
 
-   result <-  list(probeID=genes,cytoband=cytoband,geneSYM=symbol,
-                  pvalue=pvalues, locusid=locusids, genedescription=genedescription,
-                  chromosome=chromosome, class=class)
+   contract <- function(listX){
+     return(sapply(listX, contractMultiple))
+   }
+
+   genedescription <- contract(genedescription)
+   locusids        <- contract(locusids)
+   symbol          <- contract(symbol)
+   cytoband        <- contract(cytoband)
+
+   # if one gene is annotated twice to the same chromosomal band remove the additional copies:
+   pvalues <- original.pvalue[sig][!areDuplicated]
+   geneLoc <- original.loc[sig][!areDuplicated]
+   genesUScore <- round(original.score[sig][!areDuplicated], digits=2)
+   #browser()
+
+   result <-  list(probeID=genesU, cytoband=cytoband, geneSYM=symbol,
+                   pvalue=pvalues, locusid=locusids,
+                   genedescription=genedescription,
+                   probeScore= genesUScore, chromosome=chromosome, class=class)
 
    detach(MACATevalScoringOBJ)
    return(result)
-} # get.results
+} # getResults
+
