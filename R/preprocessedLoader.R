@@ -52,9 +52,16 @@ preprocessedLoader <- function(rdatafile,chip,labels=NULL,rdafile=TRUE,tabfile=F
                     
   cat("Assessing chromosome information for genes on chip...\n")
   chromLocationObj <- buildChromLocation(chip)
-  eset <- new("exprSet", exprs=m)
+  if (is.null(colnames(m))){
+    colnames(m) <- paste("sample",as.character(1:ncol(m)),sep="")
+  }
+  # build pheno data to satisfy current exprSet validation:
+  sampleDataFrame <- data.frame(sampleNames=I(colnames(m)),
+                                row.names=colnames(m))
+  pdata <- new("phenoData", pData=sampleDataFrame,
+               varLabels=list(names(sampleDataFrame)))
+  eset  <- new("exprSet", exprs=m, phenoData=pdata)
   chromosomes <- names(chromLocationObj@chromInfo)                  
-#  chromosomes = c(seq(1, 22), "X", "Y")
   allGeneNames <- c()
   allGeneLocations <- c()
   allChromosomes <- c()
@@ -127,18 +134,3 @@ getExpression.MACATData <- function(data, chrom, label) {
 getExpressionByProbeset.MACATData <- function(data, probeset) {
   return(0)
 }
-
-
-#### test -source:
-# m <- preprocessedLoader("expression_matrix.rdat","hgu95av2")
-# flatm <- preprocessedLoader("testexpr.xls","hgu95av2",rdafile=F,tabfile=T,labelfile=F)
-
-# flatm <- preprocessedLoader("testexpr.xls","hgu133a","testlabels.txt",rdafile=F,tabfile=T,labelfile=T)
-
-
-# X <- matrix(rnorm(200),nrow=20,ncol=10)
-# rownames(X) <- c('34916_s_at','34917_at','34462_at','163_at','35219_at','31641_s_at','33300_at','33301_g_at','38950_r_at','41249_at','294_s_at','32004_s_at','33299_at','41243_at','33341_at','362_at','1918_at','41499_at','41500_at','41282_s_at')
-# colnames(X) <- paste("Sample",1:10,sep="")
-# y <- rep(c("A","B"),c(5,5))
-# toy <- buildMACAT(X,"hgu95av2",y)
-
