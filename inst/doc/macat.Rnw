@@ -22,7 +22,7 @@
   \usepackage[pdftex,linktocpage]{hyperref}
   \hypersetup{pdfstartview={FitH},
               pdfpagemode={UseOutlines},
-              pdftitle={User's guide to macat v1.0},
+              pdftitle={User's guide to MACAT},
               pdfauthor={Joern Toedling},
               pdfsubject={Bioconductor vignette},
              }
