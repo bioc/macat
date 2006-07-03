@@ -11,8 +11,8 @@
  or the convenience wrapper 'buildMACAT'.
 }
 \usage{
-preprocessedLoader(rdatafile, chip, labels = NULL, rdafile = TRUE,
-tabfile = FALSE, labelfile = FALSE)
+preprocessedLoader(rdatafile, chip, labels = NULL, chromLocObj = NULL,
+rdafile = TRUE, tabfile = FALSE, labelfile = FALSE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -23,6 +23,10 @@ tabfile = FALSE, labelfile = FALSE)
   \item{labels}{Classlabels of the samples, vector of same length as number of
 	columns in expression matrix; alternatively complete name of textfile
 	with one label per line}
+  \item{chromLocObj}{Object of class \code{chromLocation} specifying the
+        genomic position, each probe on the array is mapped to. If not
+        provided, it is build in the function using \code{annotate}'s
+        function \code{buildChromLocation}.}
   \item{rdafile}{Logical; is first argument a saved R-file?}
   \item{tabfile}{Logical; is first argument a tab-separated text file?}
   \item{labelfile}{Logical; is third argument a file with one label per line?}

@@ -8,7 +8,7 @@
 	in your workspace.
 }
 \usage{
-buildMACAT(matrix, chip, labels = NULL)
+buildMACAT(matrix, chip, labels = NULL, chromLocObj = NULL)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -16,7 +16,11 @@ buildMACAT(matrix, chip, labels = NULL)
 	Rownames have to match chip; Columnnames are not mandatory.}
   \item{chip}{Identifier for used microarray}
   \item{labels}{Classlabels for samples, has to have length=number of columns
-	in matrix}
+    in matrix}
+  \item{chromLocObj}{Object of class \code{chromLocation} specifying the
+  genomic position, each probe on the array is mapped to. If not
+  provided, it is build in the function using \code{annotate}'s
+  function \code{buildChromLocation}.}
 }
 \details{
   This is only a convenience wrapper around the function
