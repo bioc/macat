@@ -27,8 +27,11 @@ evaluateParameters(data, class, chromosome, kernel, kernelparams = NULL,
 	kernelparams=list(k=5) for taking the 5 nearest neighbours in the
 	kNN-kernel. If NULL some defaults are set within the function.}
   \item{paramMultipliers}{Numeric vector. If you do cross-validation of the 
-	kernel parameters, specify the multipliers of the given (standard)
-	parameters to search over for the optimal one.}
+	kernel parameters, specify these as multipliers of the given (standard)
+	kernel parameter, depending on your kernel choice (see page 5 of
+	the vignette). The multiplication results are the kernel
+	argument settings, among which you want to search for the optimal one
+	using cross-validation.}
   \item{subset}{If a subset of samples is to be used, give vector of column-
 	indices of these samples in the original matrix here.}
   \item{newlabels}{If other labels than the ones in the MACAT-list-structure
