@@ -16,7 +16,7 @@ Description: This library contains functions to investigate links
         leukemia (Yeoh et al.Cancer Cell 2002), which is provided in
         the library 'stjudem'.
 Maintainer: Joern Toedling <toedling@ebi.ac.uk>
-License: GPL version 2 or newer
+License: Artistic License 2.0
 biocViews: Microarray, DifferentialExpression, Visualization
 Referenence: Toedling J, Schmeier S, Heinig M, Georgi B, Roepcke S (2005).
 	MACAT - MicroArray Chromosome Analysis Tool.
