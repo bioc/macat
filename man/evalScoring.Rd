@@ -96,6 +96,7 @@ evalScoring(data,class,chromosome,nperms=1000,permute="labels",subset=NULL,
     plot(chrom1Tknn)
 
     # plotting on HTML:
-    plot(chrom1Tknn,"html")
+    if (interactive())
+       plot(chrom1Tknn,"html")
 }
 \keyword{manip}% at least one, from doc/KEYWORDS

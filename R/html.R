@@ -85,8 +85,7 @@ getHtml <- function(MACATevalScoringOBJ, SLIDINGpic, HTMLfilename, mytitle){
    res=getResults(MACATevalScoringOBJ)
 
    # path for pics
-   #chrompic=paste("http://macat.sourceforge.net/pics/ch",MACATevalScoringOBJ$chromosome,".png", sep="")
-   chrompic=paste("http://compdiag.molgen.mpg.de/software/macatchrompics/ch",MACATevalScoringOBJ$chromosome,".png", sep="")
+   chrompic=paste("http://www.ebi.ac.uk/huber-srv/data/macatchrompics/ch",MACATevalScoringOBJ$chromosome,".png", sep="")
    
    if (is.null(res)){
      head=c()
@@ -94,7 +93,7 @@ getHtml <- function(MACATevalScoringOBJ, SLIDINGpic, HTMLfilename, mytitle){
             mytitle, table.head=head)
    }
    else {
-     head=c("LocusID", "ProbeSet ID", "Cytoband", "Gene Symbol", "Gene Description", "Score", "p-Value")
+     head=c("Entrezgene ID", "ProbeSet ID", "Cytoband", "Gene Symbol", "Gene Description", "Score", "p-Value")
      mylocusid <- unlist(res$locusid)
      myhtml(mylocusid, res$chromosome, SLIDINGpic, chrompic , HTMLfilename,
             mytitle, list(res$probeID, res$cytoband, res$geneSYM, res$genedescription, res$probeScore,
@@ -171,14 +170,16 @@ getResults <- function(MACATevalScoringOBJ){
    }
    
    thisEnv = paste(chip, "GENENAME", sep="")
-   genedescription = mget(genesU, env=eval(as.symbol(thisEnv)))   
-   thisEnv = paste(chip, "LOCUSID", sep="") 
+   genedescription = mget(genesU, env=eval(as.symbol(thisEnv)))
+   thisEnv = paste(chip, "ENTREZID", sep="")
+   ## xLOCUSID was renamed to xENTREZID from Bioc 1.9 on
+   if (!exists(thisEnv))
+     thisEnv = paste(chip, "LOCUSID", sep="")
    locusids=mget(genesU, env=eval(as.symbol(thisEnv)))
    thisEnv=paste(chip, "SYMBOL", sep="")
    symbol=mget(genesU, env=eval(as.symbol(thisEnv)))
    thisEnv=paste(chip, "MAP", sep="")
    cytoband=mget(genesU, env=eval(as.symbol(thisEnv)))
-   #bandsAnnotated <- listLen(cytoband)
 
    contract <- function(listX){
      return(sapply(listX, contractMultiple))
@@ -193,7 +194,6 @@ getResults <- function(MACATevalScoringOBJ){
    pvalues <- original.pvalue[sig][!areDuplicated]
    geneLoc <- original.loc[sig][!areDuplicated]
    genesUScore <- round(original.score[sig][!areDuplicated], digits=2)
-   #browser()
 
    result <-  list(probeID=genesU, cytoband=cytoband, geneSYM=symbol,
                    pvalue=pvalues, locusid=locusids,
