@@ -5,7 +5,7 @@ Date: 2006-09-25
 Author: Benjamin Georgi, Matthias Heinig, Stefan Roepcke, Sebastian
         Schmeier, Joern Toedling
 Depends: Biobase, annotate
-Suggests: hgu95av2
+Suggests: hgu95av2, stjudem
 Description: This library contains functions to investigate links
         between differential gene expression and the chromosomal
         localization of the genes. MACAT is motivated by the common
