@@ -51,7 +51,7 @@ scoring(data, labels, method = "SAM", pcompute = "tdist",
 	to be an upper 'significance border' for the gene; or NULL if
 	p-values were computed from t-distribution}
 }
-\references{Regarding the regularized t-score see the \code{macat_docu.pdf}}
+\references{Regarding the regularized t-score please see the \code{macat} vignette.}
 \author{MACAT development team}
 \note{In MACAT this function is only called internally by \code{\link{evalScoring}}}
 \seealso{\code{\link{evalScoring}}}

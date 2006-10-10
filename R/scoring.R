@@ -19,6 +19,9 @@ scoring <- function(data,labels,method="SAM",pcompute="tdist",nperms=1000,memory
   if (!(pcompute %in% c("empirical","tdist","none")))
     stop("Methode of p-value computation must be \"empirical\",\"tdist\", or \"none\"!\n)")
   binlabels<-as.numeric(labels==levels(labels)[2])  #binary label vector
+  n.possible.permutations <- choose(length(binlabels),sum(binlabels))
+  if (n.possible.permutations < nperms)
+    warning(paste("For these class labels, the number of possible permutations is",n.possible.permutations,", less than the selected number of permuations,",nperms,".\n Consider fewer permutations or select 'pcompute=\"tdist\"'\n"))
   ngenes <- nrow(data)
     
   ### 2. Compute observed scores: ###
@@ -66,6 +69,8 @@ scoring <- function(data,labels,method="SAM",pcompute="tdist",nperms=1000,memory
     meantum <- data %*% tummat.norm
     # compute variance= E(X^2) - (E(X))^2
     vartum <- (data^2) %*% tummat.norm - (meantum^2)
+    vartum[vartum<0] <- 0
+    # abs to take care of rounding errors to 
     if (memory.limit) rm(tummat.norm) # clean up
     # the same for control matrix:
     conmat <- 1-groupmat
@@ -74,6 +79,7 @@ scoring <- function(data,labels,method="SAM",pcompute="tdist",nperms=1000,memory
     if (memory.limit) rm(onevector,conmat) # clean up
     meancon <- data %*% conmat.norm
     varcon <- (data^2) %*% conmat.norm - (meancon^2)
+    varcon[varcon<0] <- 0
     r <- meantum - meancon # enumerator of test statistic
     if (memory.limit){rm(data,meantum,meancon,conmat.norm);tempgc <- gc(verbose=FALSE)}
     # compute residual sum of squares: rss=n*var

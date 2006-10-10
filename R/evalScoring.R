@@ -24,11 +24,16 @@ evalScoring <- function(data,class,chromosome,nperms=1000,permute="labels",subse
   if (!(class %in% names(table(labels))))
     stop(paste(class,"is no class in labels vector!\n"))
   stopifnot(chromosome %in% unique(data$chromosome))
-  stopifnot(permute %in% c("locations","labels"))
+  permute = match.arg(permute, c("locations","labels"))
 
   ### interpret arguments: ### 
   isClass <- as.numeric(labels == class) #binary labels
   cat(paste("Investigating",sum(isClass),"samples of class",class,"...\n"))
+  
+  n.possible.permutations <- choose(length(isClass),sum(isClass))
+  if (n.possible.permutations < nperms)
+    warning(paste("For these class labels, the number of possible permutations is",n.possible.permutations,", less than the selected number of permuations,",nperms,".\n Consider fewer permutations or select 'permute=\"locations\"'\n"))
+  
   # Assess list components:
   geneID <- data$geneName
   geneLoc <- data$geneLocation
@@ -123,9 +128,11 @@ plot.MACATevalScoring <- function(x, output="x11", HTMLfilename=NULL, mytitle=NU
   # output: one of "x11","html"
   # HTMLfilename: filname for HTMLpage, default: 'results.html'
   # mytitle: tiltle of HTMLpage, default: 'Results'
-  attach(x)
+  attach(x); on.exit(detach(x))
+  this.call <- as.list(match.call())
   if (!interactive())
     output <- "none"
+  output <- match.arg(output, c("x11","html", "none"))
   require(chip,character.only=TRUE)
   chromlength <- eval(as.symbol(paste(chip,"CHRLENGTHS",sep="")))[chromosome]
   lowestpos <- 0 # old: min(min(original.loc),min(steps))
@@ -150,9 +157,14 @@ plot.MACATevalScoring <- function(x, output="x11", HTMLfilename=NULL, mytitle=NU
       par(mar=c(1,5,4,1))
   } # if (new.device)
 
-  plot(lowestpos,lowestscore,type="n",xaxt="n",xlab=NA,ylab="Score",
-       xlim=c(lowestpos,highestpos),ylim=c(lowestscore,highestscore),
-       frame.plot=FALSE,...)
+  if (!("xlim" %in% names(this.call)) || output=="html")
+    plot(lowestpos,lowestscore,type="n",xaxt="n",xlab=NA,ylab="Score",
+         xlim= c(lowestpos,highestpos), ylim=c(lowestscore,highestscore),
+         frame.plot=FALSE,...)
+  else
+    plot(lowestpos,lowestscore,type="n",xaxt="n",xlab=NA,ylab="Score",
+         ylim=c(lowestscore,highestscore), frame.plot=FALSE,...)
+
   points(original.loc,original.score,pch=20,cex=0.7,col="black")
   lines(steps,sliding.value,col="red",lwd=3)
   issig <- ((sliding.value>upper.permuted.border)|(sliding.value<lower.permuted.border))
@@ -169,5 +181,4 @@ plot.MACATevalScoring <- function(x, output="x11", HTMLfilename=NULL, mytitle=NU
     ####
     getHtml(x, Slidingpic, HTMLfilename, mytitle)
   }
-  detach(x)
 } # plot.MACATevalScoring
