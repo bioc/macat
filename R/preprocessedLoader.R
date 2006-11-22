@@ -71,7 +71,7 @@ preprocessedLoader <- function(rdatafile,chip,labels=NULL,chromLocObj=NULL, rdaf
   allGeneLocations <- c()
   allChromosomes <- c()
 
-  # auxiliary function from 'annotate' with fixed bug:
+  # auxiliary function from 'annotate' with allowing for no genes on chrom:
   usedChromGenes2 <- function (eSet, chrom, specChrom){
     cLocs <- chromLocs(specChrom)
     genes <- cLocs[[chrom]]

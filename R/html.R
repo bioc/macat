@@ -32,7 +32,7 @@ myhtml <- function (genelist, chrom, SLIDINGpic, CHROMpic, filename, mytitle, ot
     w = "\"796\""
    
     
-    cat("<p style=",st,"><img src=\"",CHROMpic,"\" width=",w,"height=\"80\" alt=\"\" border=\"0\"><\p>" ,sep="" ,file = outfile)
+    cat("<p style=",st,"><img src=\"",CHROMpic,"\" width=",w,"height=\"80\" alt=\"\" border=\"0\"></p>" ,sep="" ,file = outfile)
     cat("<br><br>", file=outfile)
     cat("<H3>Genes within Significant Regions</H3>", file=outfile)
 
