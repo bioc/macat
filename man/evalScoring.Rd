@@ -93,7 +93,8 @@ evalScoring(data,class,chromosome,nperms=1000,permute="labels",subset=NULL,
     nperms=100,kernel=kNN,kernelparams=list(k=15),step.width=100000)
 
     # plotting on x11:
-    plot(chrom1Tknn)
+    if (interactive())
+       plot(chrom1Tknn)
 
     # plotting on HTML:
     if (interactive())

@@ -58,7 +58,8 @@ evaluateParameters(data, class, chromosome, kernel, kernelparams = NULL,
 data(stjd)
 evalkNN6 <- evaluateParameters(stjd, class="T", chromosome=6,kernel=kNN, 
                                paramMultipliers=c(0.01,seq(0.2,2.0,0.2),2.5))
-plot(evalkNN6)
+if (interactive())
+  plot(evalkNN6)
 }
 \keyword{manip}% at least one, from doc/KEYWORDS
 

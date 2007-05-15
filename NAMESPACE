@@ -1,10 +1,11 @@
 import("graphics") 
 
-export("buildMACAT", "compute.sliding",
+export("buildMACAT", "compute.sliding", "loaddatapkg",
        "discreteKernelize", "discretize","discretize.tscores",
        "discretizeAll","evalScoring","evaluateParameters","getResults",
        "kernelize","kernelizeAll","kernelizeToPython",
        "preprocessedLoader","scoring","plotSliding",
-       "kNN","rbf","basePairDistance")
+       "kNN","rbf","basePairDistance","getsteps")
 
 S3method("plot", "MACATevalScoring")
+S3method("plot", "MACATevP")

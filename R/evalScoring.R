@@ -128,27 +128,27 @@ plot.MACATevalScoring <- function(x, output="x11", HTMLfilename=NULL, mytitle=NU
   # output: one of "x11","html"
   # HTMLfilename: filname for HTMLpage, default: 'results.html'
   # mytitle: tiltle of HTMLpage, default: 'Results'
-  attach(x); on.exit(detach(x))
+  #attach(x); on.exit(detach(x))
   this.call <- as.list(match.call())
   if (!interactive())
     output <- "none"
   output <- match.arg(output, c("x11","html", "none"))
-  require(chip,character.only=TRUE)
-  chromlength <- eval(as.symbol(paste(chip,"CHRLENGTHS",sep="")))[chromosome]
+  require(x$chip,character.only=TRUE)
+  chromlength <- eval(as.symbol(paste(x$chip,"CHRLENGTHS",sep="")))[x$chromosome]
   lowestpos <- 0 # old: min(min(original.loc),min(steps))
   highestpos <- chromlength # old: max(max(original.loc),max(steps))
-  lowestscore <- min(min(original.score),min(sliding.value),min(lower.permuted.border))
-  highestscore <- max(max(original.score),max(sliding.value),max(upper.permuted.border))
+  lowestscore <- min(min(x$original.score),min(x$sliding.value),min(x$lower.permuted.border))
+  highestscore <- max(max(x$original.score),max(x$sliding.value),max(x$upper.permuted.border))
   if ((new.device) & interactive()){
     if (output=="x11"){
       if (capabilities()["X11"])
         x11(width=12,height=6)
     } else if (output=="html"){
       if (is.null(HTMLfilename))
-        HTMLfilename=paste("Results",chromosome, "_" ,class ,".html",sep="")
+        HTMLfilename=paste("Results",x$chromosome, "_" ,x$class ,".html",sep="")
       if (is.null(mytitle))
-        mytitle=paste("Results for class ", class, " on chromosome ", chromosome, sep="")
-      Slidingpic=paste("scoreplot", chromosome,"_",class, ".png", sep="")
+        mytitle=paste("Results for class ", x$class, " on chromosome ", x$chromosome, sep="")
+      Slidingpic=paste("scoreplot", x$chromosome,"_",x$class, ".png", sep="")
       png(Slidingpic,width=900,height=480) ####
     }
     if (output=="x11")
@@ -165,13 +165,13 @@ plot.MACATevalScoring <- function(x, output="x11", HTMLfilename=NULL, mytitle=NU
     plot(lowestpos,lowestscore,type="n",xaxt="n",xlab=NA,ylab="Score",
          ylim=c(lowestscore,highestscore), frame.plot=FALSE,...)
 
-  points(original.loc,original.score,pch=20,cex=0.7,col="black")
-  lines(steps,sliding.value,col="red",lwd=3)
-  issig <- ((sliding.value>upper.permuted.border)|(sliding.value<lower.permuted.border))
-  points(steps[issig],sliding.value[issig],col="gold",pch=20,cex=0.7,lwd=2)
-  lines(steps,lower.permuted.border,col="gray",lwd=3)
-  lines(steps,upper.permuted.border,col="gray",lwd=3)
-  title(main=paste("Class",class,", Scores for Chromosome",chromosome))
+  points(x$original.loc,x$original.score,pch=20,cex=0.7,col="black")
+  lines(x$steps,x$sliding.value,col="red",lwd=3)
+  issig <- ((x$sliding.value>x$upper.permuted.border)|(x$sliding.value<x$lower.permuted.border))
+  points(x$steps[issig],x$sliding.value[issig],col="gold",pch=20,cex=0.7,lwd=2)
+  lines(x$steps,x$lower.permuted.border,col="gray",lwd=3)
+  lines(x$steps,x$upper.permuted.border,col="gray",lwd=3)
+  title(main=paste("Class",x$class,", Scores for Chromosome",x$chromosome))
   if ((output=="x11")&(new.device)){
     axis(1)
     mtext("Coordinate",1,line=3)
