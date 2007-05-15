@@ -6,7 +6,7 @@
   This function processes the result of the \code{evalScoring} function
   and returns a list of probe sets within chromosome regions deemed
   significant by MACAT. Additional annotation for these probe sets is
-  provided along with their IDs}
+  provided along with their IDs
 }
 \usage{
 getResults(MACATevalScoringOBJ)

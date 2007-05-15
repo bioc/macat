@@ -1,7 +1,7 @@
 Package: macat
 Title: MicroArray Chromosome Analysis Tool
-Version: 1.11.0
-Date: 2006-10-10
+Version: 1.11.1
+Date: 2007-05-15
 Author: Benjamin Georgi, Matthias Heinig, Stefan Roepcke, Sebastian
         Schmeier, Joern Toedling
 Depends: Biobase, annotate
@@ -19,6 +19,6 @@ Description: This library contains functions to investigate links
 Maintainer: Joern Toedling <toedling@ebi.ac.uk>
 License: Artistic License 2.0
 biocViews: Microarray, DifferentialExpression, Visualization
-Referenence: Toedling J, Schmeier S, Heinig M, Georgi B, Roepcke S (2005).
+Reference: Toedling J, Schmeier S, Heinig M, Georgi B, Roepcke S (2005).
 	MACAT - MicroArray Chromosome Analysis Tool.
 	Bioinformatics. 21(9):2112--2113.
