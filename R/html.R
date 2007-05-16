@@ -116,29 +116,29 @@ getResults <- function(MACATevalScoringOBJ){
 
    stopifnot(inherits(MACATevalScoringOBJ,"MACATevalScoring")) # check class of object
    
-   attach(MACATevalScoringOBJ, warn.conflicts=FALSE)
-   require(chip, character.only=TRUE)
+   #attach(MACATevalScoringOBJ, warn.conflicts=FALSE)
+   require(MACATevalScoringOBJ$chip, character.only=TRUE)
       
-   step.width = steps[2] - steps[1]
+   step.width = MACATevalScoringOBJ$steps[2] - MACATevalScoringOBJ$steps[1]
    #----------------------------------------------
    # find all genes in significant regions
    # vec of significant Genes
-   sig=rep(FALSE,length(original.geneid))
+   sig <- vector("logical", length(MACATevalScoringOBJ$original.geneid))
    # vec of significant sliding.values
-   issig = ((sliding.value>upper.permuted.border)|(sliding.value<lower.permuted.border))
+   issig <- with(MACATevalScoringOBJ, (sliding.value>upper.permuted.border)|(sliding.value<lower.permuted.border))
    
    interpolate <- function(i, loc, values){
-     y = values[i]+((values[i+1]-values[i])/(steps[i+1]-steps[i])) * (loc - steps[i])
+     y = values[i]+((values[i+1]-values[i])/(MACATevalScoringOBJ$steps[i+1]-MACATevalScoringOBJ$steps[i])) * (loc - MACATevalScoringOBJ$steps[i])
      return(y)
    }
   
    # find significant genes
    gene = 0
-   for (loc in original.loc) {
+   for (loc in MACATevalScoringOBJ$original.loc) {
      gene = gene + 1     
-     i = floor((loc-steps[1])/ step.width) + 1
+     i = floor((loc-MACATevalScoringOBJ$steps[1])/ step.width) + 1
 
-     if (i == length(steps)) {
+     if (i == length(MACATevalScoringOBJ$steps)) {
          sig[gene] = issig[i]   
      }
      else {
@@ -146,15 +146,15 @@ getResults <- function(MACATevalScoringOBJ){
          next 
        }
        else {
-         sliding = interpolate(i, loc, sliding.value)
-         lower = interpolate(i, loc, lower.permuted.border)
-         upper = interpolate(i, loc, upper.permuted.border)
+         sliding = interpolate(i, loc, MACATevalScoringOBJ$sliding.value)
+         lower = interpolate(i, loc, MACATevalScoringOBJ$lower.permuted.border)
+         upper = interpolate(i, loc, MACATevalScoringOBJ$upper.permuted.border)
          sig[gene] = ((sliding>upper)|(sliding<lower))
        }
      }
    }
   
-   genes  <- original.geneid[sig]
+   genes  <- MACATevalScoringOBJ$original.geneid[sig]
    if (length(genes)==0){
      return(NULL)
    }
@@ -169,16 +169,16 @@ getResults <- function(MACATevalScoringOBJ){
      return(paste(charVec, collapse="; "))
    }
    
-   thisEnv = paste(chip, "GENENAME", sep="")
+   thisEnv = paste(MACATevalScoringOBJ$chip, "GENENAME", sep="")
    genedescription = mget(genesU, env=eval(as.symbol(thisEnv)))
-   thisEnv = paste(chip, "ENTREZID", sep="")
+   thisEnv = paste(MACATevalScoringOBJ$chip, "ENTREZID", sep="")
    ## xLOCUSID was renamed to xENTREZID from Bioc 1.9 on
    if (!exists(thisEnv))
-     thisEnv = paste(chip, "LOCUSID", sep="")
+     thisEnv = paste(MACATevalScoringOBJ$chip, "LOCUSID", sep="")
    locusids=mget(genesU, env=eval(as.symbol(thisEnv)))
-   thisEnv=paste(chip, "SYMBOL", sep="")
+   thisEnv=paste(MACATevalScoringOBJ$chip, "SYMBOL", sep="")
    symbol=mget(genesU, env=eval(as.symbol(thisEnv)))
-   thisEnv=paste(chip, "MAP", sep="")
+   thisEnv=paste(MACATevalScoringOBJ$chip, "MAP", sep="")
    cytoband=mget(genesU, env=eval(as.symbol(thisEnv)))
 
    contract <- function(listX){
@@ -191,16 +191,16 @@ getResults <- function(MACATevalScoringOBJ){
    cytoband        <- contract(cytoband)
 
    # if one gene is annotated twice to the same chromosomal band remove the additional copies:
-   pvalues <- original.pvalue[sig][!areDuplicated]
-   geneLoc <- original.loc[sig][!areDuplicated]
-   genesUScore <- round(original.score[sig][!areDuplicated], digits=2)
+   pvalues <- MACATevalScoringOBJ$original.pvalue[sig][!areDuplicated]
+   geneLoc <- MACATevalScoringOBJ$original.loc[sig][!areDuplicated]
+   genesUScore <- round(MACATevalScoringOBJ$original.score[sig][!areDuplicated], digits=2)
 
    result <-  list(probeID=genesU, cytoband=cytoband, geneSYM=symbol,
                    pvalue=pvalues, locusid=locusids,
                    genedescription=genedescription,
-                   probeScore= genesUScore, chromosome=chromosome, class=class)
+                   probeScore= genesUScore, chromosome=MACATevalScoringOBJ$chromosome, class=class)
 
-   detach(MACATevalScoringOBJ)
+   #detach(MACATevalScoringOBJ)
    return(result)
 } # getResults
 

@@ -1,4 +1,4 @@
-citHeader("To cite macat in publications use:")
+citHeader("When using macat for analyzing your data, please cite:")
 
 citEntry(entry="article",  
   title  = paste("macat","-","microarray chromosomal analysis tool"),
@@ -9,6 +9,4 @@ citEntry(entry="article",
   volume = "21",
   number = "9",
   pages = "2112--2113",
-  textVersion = paste("Toedling J, Schmeier S, Heinig M, Georgi B, Roepcke S (2005)","MACAT - MicroArray Chromosome Analysis Tool","Bioinformatics. 21(9):2112--2113"))
-
-citFooter("Please cite macat when using it for data analysis.")
+  textVersion = paste("Toedling J, Schmeier S, Heinig M, Georgi B, Roepcke S (2005)","MACAT - MicroArray Chromosome Analysis Tool","Bioinformatics. 21(9):2112-2113."))

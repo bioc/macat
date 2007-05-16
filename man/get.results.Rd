@@ -1,17 +1,15 @@
 \name{getResults}
 \alias{getResults}
-%- Also NEED an '\alias' for EACH other topic documented here.
 \title{Access results of 'evalScoring'}
 \description{
   This function processes the result of the \code{evalScoring} function
   and returns a list of probe sets within chromosome regions deemed
   significant by MACAT. Additional annotation for these probe sets is
-  provided along with their IDs
+  provided along with their identifiers.
 }
 \usage{
 getResults(MACATevalScoringOBJ)
 }
-%- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{MACATevalScoringOBJ}{Object of class \code{MACATevalScoring},
     usually the result from \code{evalScoring}}
@@ -32,7 +30,6 @@ getResults(MACATevalScoringOBJ)
   \item{chromosome}{chromosome, the analysis has been done for}
   \item{class}{sample class, the analysis has been done for}
 }
-%\references{ ~put references to the literature/web site here ~ }
 \author{MACAT development team}
 \details{
   The p-values have been computed individually for probe sets (genes),
