@@ -1,6 +1,5 @@
 \name{kernelizeToPython}
 \alias{kernelizeToPython}
-%- Also NEED an '\alias' for EACH other topic documented here.
 \title{Smooth expression values and write to file}
 \description{
   Smoothes expression data for one chromosome and writes 
@@ -13,7 +12,6 @@
 kernelizeToPython(data, chrom, step.width = 1e+05, kernel = rbf, 
                   kernelparams = list(gamma = 1/10^13), saveToFile = TRUE)
 }
-%- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{data}{ MACATData Object }
   \item{chrom}{ kernelize all genes that are on this chromosome }
@@ -29,28 +27,12 @@ kernelizeToPython(data, chrom, step.width = 1e+05, kernel = rbf,
 \value{
   returns kernelized expression matrix
 }
-%\references{  }
 \author{ The MACAT Development team }
-%\note{  }
-
 \seealso{ \code{\link{pydata}}, \code{\link{kernelizeAll}} }
 \examples{
-  data(stjd)
-  kernelized = kernelizeToPython(stjd, 3)
+  \dontrun{
+   data(stjd)
+   kernelized = kernelizeToPython(stjd, 3)
+  }  
 }
-\keyword{ manip }% at least one, from doc/KEYWORDS
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+\keyword{internal}% at least one, from doc/KEYWORDS

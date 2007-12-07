@@ -1,7 +1,6 @@
 \name{evaluateParameters}
 \alias{evaluateParameters}
 \alias{plot.MACATevP}
-%- Also NEED an '\alias' for EACH other topic documented here.
 \title{Evaluate Performance of Kernel Parameters by Cross-validation}
 \description{
   For a given data set, chromosome, class, and kernel function, this function
@@ -19,7 +18,7 @@ evaluateParameters(data, class, chromosome, kernel, kernelparams = NULL,
   for an example.}
   \item{class}{Sample class to be analyzed}
   \item{chromosome}{Chromosome to be analyzed}
-  \item{kernel}{Choose kernel to smooth scores along the chromose. Available
+  \item{kernel}{Choose kernel to smooth scores along the chromosome. Available
 	are 'kNN' for k-Nearest-Neighbors, 'rbf' for radial-basis-function
 	(Gaussian), 'basePairDistance' for a kernel, which averages over
 	all genes within a given range of base pairs around a position.}
@@ -44,7 +43,7 @@ evaluateParameters(data, class, chromosome, kernel, kernelparams = NULL,
   A list of class 'MACATevP' with 4 components:
   \item{[parameterName]}{List of assessed settings for the parameter
                          [parameterName].}
-  \item{avgResid}{Average Residual Sum of Suares for the parameter settings in
+  \item{avgResid}{Average Residual Sum of Squares for the parameter settings in
 	the same order as the first component.}
   \item{multiplier}{Multiplier of the original parameters in
 	the same order as the first components.}
@@ -58,8 +57,7 @@ evaluateParameters(data, class, chromosome, kernel, kernelparams = NULL,
 data(stjd)
 evalkNN6 <- evaluateParameters(stjd, class="T", chromosome=6,kernel=kNN, 
                                paramMultipliers=c(0.01,seq(0.2,2.0,0.2),2.5))
-if (interactive())
+if (interactive()&&capabilities("X11"))
   plot(evalkNN6)
 }
-\keyword{manip}% at least one, from doc/KEYWORDS
-
+\keyword{manip}

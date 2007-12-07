@@ -1,7 +1,6 @@
 \name{compute.sliding}
 \alias{compute.sliding}
 \alias{plotSliding}
-%- Also NEED an '\alias' for EACH other topic documented here.
 \title{Compute and plot smoothing of expression values or scores along the chromosome}
 \description{
 'compute.sliding' computes a smoothing of the expression data or scores
@@ -22,9 +21,8 @@ step.width=1000000, ...)
   \item{kernelparams}{ a list of named parameters for the kernel (by default estimated from the data) }
   \item{step.width}{ the smoothing is computed stepwise every step.width basepairs 
     (default is 100000) }
-  \item{...}{futher graphical parameters passed on to \code{\link{plot.default}}}
+  \item{...}{further graphical parameters passed on to \code{\link{plot.default}}}
 }
-%\details{}
 \value{
   for \code{compute.sliding}: a matrix of dimension (steps x 2) with
   in the first column the locations in basepairs where an interpolation
@@ -32,10 +30,7 @@ step.width=1000000, ...)
   \code{plotSliding} does not return anything and is merely called for
   its side-effect producing the plot.
 }
-%\references{ }
 \author{MACAT development team }
-%\note{  }
-
 \seealso{ \code{\link{kernelize}}, \code{\link{evalScoring}} }
 \examples{
 data(stjd)

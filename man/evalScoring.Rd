@@ -15,7 +15,7 @@
 evalScoring(data,class,chromosome,nperms=1000,permute="labels",subset=NULL,
      newlabels=NULL,kernel=rbf,kernelparams=NULL,cross.validate=TRUE,
      paramMultipliers=2^(-4:4),ncross=10,step.width=100000,
-     memory.limit=TRUE)
+     memory.limit=TRUE, verbose=TRUE)
 }
 \arguments{
   \item{data}{Gene expression data in the MACAT list format. See data(stjude)
@@ -51,10 +51,10 @@ evalScoring(data,class,chromosome,nperms=1000,permute="labels",subset=NULL,
           positions, for which smoothed scores are to be calculated.}
   \item{memory.limit}{If you have a computer with lots of RAM,
 	setting this to FALSE will increase speed of computations.}
+  \item{verbose}{logical; should function's progress be reported to
+    STDOUT ?; default: TRUE.}
 }
-
-\details{See the documentation for detailed theory and explanations  of this functions.}
-
+\details{Please see the package vignette for more details on this function.}
 \value{
   List of class 'MACATevalScoring' with 11 components:  
   \item{original.geneid}{Gene IDs of the genes on the chosen chromosome, sorted
@@ -77,14 +77,16 @@ evalScoring(data,class,chromosome,nperms=1000,permute="labels",subset=NULL,
 }
 
 \author{MACAT development team}
-%\note{}
 \seealso{\code{\link{scoring}},\code{\link{plot.MACATevalScoring}},
-	\code{\link{getResults}}
+  \code{\link{getResults}}
 }
 \examples{
-   
+    data(stjd) # load example data
+
+    # if you have the data package 'stjudem' installed,
+    #  you should work on the full data therein, of which
+    #  the provided example data, is just a piece
     #loaddatapkg("stjudem")
-    data(stjd)
 
     # T-lymphocyte versus B-lymphocyte on chromosome 1, 
     #  smoothed with k-Nearest-Neighbours kernel(k=15), 

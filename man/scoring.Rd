@@ -44,24 +44,24 @@ scoring(data, labels, method = "SAM", pcompute = "tdist",
   A list, with four components:
   \item{observed}{(Regularized) t-scores for all genes based on the given labels}
   \item{pvalues}{P-values for all genes, either from permutations or t-distribution}
-  \item{expected.lower}{2.5\%-quantile of permutation test-statistics, supposed
-	to be a lower 'significance border' for the gene; or NULL if
-	p-values were computed from t-distribution}
-  \item{expected.upper}{2.5\%-quantile of permutation test-statistics, supposed
-	to be an upper 'significance border' for the gene; or NULL if
-	p-values were computed from t-distribution}
+  \item{expected.lower}{2.5\%-quantile of permutation test-statistics,
+    supposed to be a lower 'significance border' for the gene; or NULL
+    if p-values were computed from t-distribution}
+  \item{expected.upper}{97.5\%-quantile of permutation test-statistics,
+    supposed to be an upper 'significance border' for the gene; or NULL
+    if p-values were computed from t-distribution}
 }
 \references{Regarding the regularized t-score please see the \code{macat} vignette.}
 \author{MACAT development team}
-\note{In MACAT this function is only called internally by \code{\link{evalScoring}}}
+\note{In package \code{macat}, this function is only called internally
+  by the function \code{\link{evalScoring}}}
 \seealso{\code{\link{evalScoring}}}
 \examples{
- \dontrun{
   data(stjd)
-  # compute scores for T- vs. B-lymphocyte ALL:
+  # compute gene-wise regularized t-statistics for
+  #  T- vs. B-lymphocyte ALL:
   isT <- as.numeric(stjd$labels=="T")
-  TvsB <- scoring(stjd$expr,isT,method="SAM",pcompute="empirical",nperms=100)
+  TvsB <- scoring(stjd$expr,isT,method="SAM",pcompute="none")
   summary(TvsB$observed)
- }
 }
 \keyword{manip}% at least one, from doc/KEYWORDS

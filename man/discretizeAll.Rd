@@ -1,6 +1,5 @@
 \name{discretizeAll}
 \alias{discretizeAll}
-%- Also NEED an '\alias' for EACH other topic documented here.
 \title{Discretize complete expression matrix}
 \description{
   perform discretization on all chromosomes and write python flat files
@@ -8,7 +7,6 @@
 \usage{
 discretizeAll(data, margin = 10)
 }
-%- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{data}{ MACATData Object }
   \item{margin}{ symmetric quantile in percent }
@@ -33,4 +31,4 @@ discretizeAll(data, margin = 10)
   discretizeAll(stjd, margin=10) 
  }
 }
-\keyword{manip}% at least one, from doc/KEYWORDS
+\keyword{internal}

@@ -81,7 +81,7 @@ kernelizeAll <- function(data, step.width=100000, kernel=rbf,
   
 discreteKernelize <- function(data, chrom, margin=10, step.width=100000,
                               kernel=rbf, kernelparams=list(gamma=1/10^13),
-                              saveToFile=TRUE) {
+                              saveToFile=FALSE) {
   kernelizedExpression = kernelizeToPython(data, chrom, step.width, kernel,
     kernelparams, FALSE)
   upperMargin = apply(kernelizedExpression, 2, quantile, 1 - (margin/200))
@@ -90,7 +90,7 @@ discreteKernelize <- function(data, chrom, margin=10, step.width=100000,
     ncol=dim(kernelizedExpression)[2])
   discretized[kernelizedExpression > upperMargin] = 2
   discretized[kernelizedExpression < lowerMargin] = 0
-  if (saveToFile == TRUE) {
+  if (saveToFile) {
     filename = paste("discrete_kernelized_seq_margin_", margin,
       "_chrom_", chrom, sep="")
     save(discretized, file=paste(filename, ".rdata", sep=""))

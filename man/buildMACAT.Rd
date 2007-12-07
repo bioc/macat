@@ -1,6 +1,5 @@
 \name{buildMACAT}
 \alias{buildMACAT}
-%- Also NEED an '\alias' for EACH other topic documented here.
 \title{Create MACAT list from objects in workspace}
 \description{
 	This is a wrapper around the preprocessedLoader function. Use it, 
@@ -8,9 +7,8 @@
 	in your workspace.
 }
 \usage{
-buildMACAT(matrix, chip, labels = NULL, chromLocObj = NULL)
+  buildMACAT(matrix, chip, labels = NULL, chromLocObj = NULL)
 }
-%- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{matrix}{expression matrix with rows=genes and columns=samples;
 	Rownames have to match chip; Columnnames are not mandatory.}
@@ -32,7 +30,6 @@ buildMACAT(matrix, chip, labels = NULL, chromLocObj = NULL)
   see data \code{stjude} in package 'stjudem'.
 }
 \author{MACAT development team}
-%\note{ ~~further notes~~ }
 \seealso{\code{\link{preprocessedLoader}},\code{stjude} in package 'stjudem'}
 \examples{
  X <- matrix(rnorm(200),nrow=20,ncol=10)
@@ -45,4 +42,4 @@ buildMACAT(matrix, chip, labels = NULL, chromLocObj = NULL)
  toy <- buildMACAT(X,"hgu95av2",y)
  summary(toy)
 }
-\keyword{file}% at least one, from doc/KEYWORDS
+\keyword{manip}

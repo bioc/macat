@@ -46,13 +46,14 @@ rdafile = TRUE, tabfile = FALSE, labelfile = FALSE)
 }
 %\references{ ~put references to the literature/web site here ~ }
 \author{MACAT development team}
-\note{To date MACAT can only work with commercial Affymetrix
- microarrays, denoted by one the following identifiers:
- hu6800, hgu95av2, hgu95b, hgu95c, hgu95d, hgu95e, 
- hgu133a, hgu133b, mgu74av2, mgu74bv2, mgu74c, moe430a, 
- moe430b, rae230a, rae230b, rgu34a, rgu34b, rgu34c
+\note{At present, \code{macat} can only work with Affymetrix
+  microarrays, for which an annotation package is installed on your
+  system. Such annotation packages can either be obtained from the
+  Bioconductor annotation packages repository or be constructed using
+  the Bioconductor package \code{AnnBuilder}. For an example, see the
+  common annotation package \code{hgu95av2}.
 }
-\seealso{\code{\link{buildMACAT}},\code{\link[base]{read.table}},\code{\link{stjd}},\code{\link[stjudem]{stjude}} in package 'stjudem'}
+\seealso{\code{\link{buildMACAT}},\code{\link[base]{read.table}},\code{\link{stjd}},\code{stjude} in package 'stjudem'}
 \examples{
  \dontrun{
   # assume you have your HG-U95Av2 expression values in a
@@ -61,6 +62,3 @@ rdafile = TRUE, tabfile = FALSE, labelfile = FALSE)
  }
 }
 \keyword{file}% at least one, from doc/KEYWORDS
-
-
-

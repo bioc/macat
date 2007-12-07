@@ -2,7 +2,10 @@
 \alias{plot.MACATevalScoring}
 \title{Plot function for MACATevalScoring objects.}
 \description{
-  Function plots scores, 0.025 and 0.975 quantiles of the permuted scores (grey lines), sliding average score (red line), highlighted regions (yellow dotted) where the score exides the quantiles, along chromosome.  
+  Function plots scores, 0.025 and 0.975 quantiles of the permuted
+  scores (grey lines), and sliding average score (red line) along the
+  chromosome. Yellow dots highlight regions, in which the smoothed
+  absolute scores exceed the permutation-derived quantile boundaries.
 }
 \usage{
 \method{plot}{MACATevalScoring}(x, output = "x11", 
@@ -19,8 +22,8 @@
 }
 \details{
   One can create a HTML-page on-the-fly if argument output='html'. 
-  The HTML-page provids informations about highlighted regions in the plot. 
-  Furthermore there are clickable LocusIDs for further analysis. 
+  The HTML-page provides informations about highlighted regions in the plot. 
+  Furthermore there are click-able Entrezgene-IDs for further analysis. 
 }
 \author{MACAT development team}
 \seealso{\code{\link{evalScoring}}, \code{\link{getResults}}}

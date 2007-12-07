@@ -1,18 +1,15 @@
 \name{kernelizeAll}
 \alias{kernelizeAll}
-%- Also NEED an '\alias' for EACH other topic documented here.
 \title{Smooth expression data for all chromosomes}
 \description{
-	'kernelizeAll' smoothes complete expression matrix
-	and writes the result into  one
-	text file for each chromosome. These text files
-	can be read into PYTHON.
+  'kernelizeAll' smoothes complete expression matrix and writes the
+  result into  one text file for each chromosome. These text files can
+  be read into Python. 
 }
 \usage{
 kernelizeAll(data, step.width = 1e+05, kernel = rbf, 
              kernelparams = list(gamma = 1/10^13))
 }
-%- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{data}{ MACATData Object}
   \item{step.width}{ size of steps for kernelization }
@@ -25,27 +22,16 @@ kernelizeAll(data, step.width = 1e+05, kernel = rbf,
   where <chrom> is the name of the chromosome.
 }
 \value{
-produces text files
+  does not return anything; called for its side-effect that is to
+  produce Python-readable text files
 }
-%\references{ }
 \author{ The MACAT Development Team }
-%\note{  }
-
 \seealso{ \code{\link{pydata}},  \code{\link{kernelizeToPython}} }
 \examples{
  \dontrun{
-  # !!! take some time !!!
+  # !!! takes quite some time !!!
   loaddatapkg("stjudem")
   kernelizeAll(stjude)
  }
 }
-\keyword{ manip }% at least one, from doc/KEYWORDS
-
-
-
-
-
-
-
-
-
+\keyword{internal}% at least one, from doc/KEYWORDS

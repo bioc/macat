@@ -2,7 +2,6 @@
 \alias{kernelmatrix}
 \alias{getsteps}
 \alias{kernelize}
-%- Also NEED an '\alias' for EACH other topic documented here.
 \title{Smooth expression values or scores}
 \description{
   'kernelize' uses a kernel to smooth the data given in geneLocations by
@@ -16,29 +15,23 @@ kernelmatrix(steps, geneLocations, kernel, kernelparams)
 kernelize(values, kernelweights)
 }
 \arguments{
-	\item{geneLocations}{ a list of gene locations (length n)}
-	\item{step.width}{ the width of steps in basepairs }
-	
-	\item{steps}{ a list of locations where the kernelization shall be computed }
-	\item{kernel}{kernel function one of rbf, kNN or basePairDistance (or your own) }
-	\item{kernelparams}{ a list of named parameters for the kernel (default is fitted to the data) }
-	
-	\item{values}{vector of length n or matrix (m x n) of values that are to be smoothed}
-	\item{kernelweights}{a matrix of (n x steps) where n is the length of the
-  		values vector and steps is the number of points where you wish to interpolate }
-
+  \item{geneLocations}{ a list of gene locations (length n)}
+  \item{step.width}{ the width of steps in basepairs }
+  \item{steps}{ a list of locations where the kernelization shall
+    be computed }
+  \item{kernel}{kernel function one of rbf, kNN or basePairDistance (or your own) }
+  \item{kernelparams}{ a list of named parameters for the kernel (default is fitted to the data) }
+  \item{values}{vector of length n or matrix (m x n) of values that are to be smoothed}
+  \item{kernelweights}{a matrix of (n x steps) where n is the
+    length of the values vector and steps is the number of points
+    where you wish to interpolate}
 }
 \value{
   \item{getsteps}{a list of locations starting at min(genLocations) going to max(geneLocations) with steps of size step.width}
   \item{kernelmatrix}{ a matrix of (n x steps) containing the kernel weights for each location in steps}
   \item{kernelize}{a vector of length steps or a matrix (m x steps) containing the smoothed values}
 }
-
-%\references{ }
 \author{ MACAT Development team }
-%\note{  }
-
-
 \seealso{ \code{\link{compute.sliding}}, \code{\link{evalScoring}} }
 \examples{
   data(stjd)
@@ -51,4 +44,4 @@ kernelize(values, kernelweights)
   kernelized = kernelize(geneExpression, weights)
   plot(steps, kernelized[1,])
 }
-\keyword{ manip }% at least one, from doc/KEYWORDS
+\keyword{manip}

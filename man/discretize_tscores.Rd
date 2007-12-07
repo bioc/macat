@@ -4,7 +4,7 @@
 \title{Discretize regularized t-scores}
 \description{
   discretize.tscores returns a discretized version of the scores in the MACATevalScoring object.
-  Discretization is performed by comparing the value genewise (locationwise) with the symmetric 
+  Discretization is performed by comparing the value gene-wise (location-wise) with the symmetric 
   upper and lower quantile given by margin (in percent margin/2 lower and upper quantile).
   discretizeAllClasses produces a flatfile readable by PYTHON.
 }
@@ -12,7 +12,6 @@
 discretize.tscores(scores)
 discretizeAllClasses.tscores(data, chrom, nperms=10, kernel=rbf, kernelparams=NULL, step.width=100000)
 }
-%- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{scores}{ a MACATevalScoring object obtained from evalScoring }
   \item{data}{ a MACATData Object containing all expression values, geneLocations and labels 
@@ -42,4 +41,4 @@ discretizeAllClasses.tscores(data, chrom, nperms=10, kernel=rbf, kernelparams=NU
   scores = evalScoring(stjd, "T", 1, nperms=100, cross.validate=FALSE)
   discrete = discretize.tscores(scores)
 }
-\keyword{manip}% at least one, from doc/KEYWORDS
+\keyword{manip}

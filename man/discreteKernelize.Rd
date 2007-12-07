@@ -1,6 +1,5 @@
 \name{discreteKernelize}
 \alias{discreteKernelize}
-%- Also NEED an '\alias' for EACH other topic documented here.
 \title{Discretize and smooth expression values}
 \description{
   returns discretized kernelized expression values and saves them to a
@@ -9,9 +8,8 @@
 }
 \usage{
 discreteKernelize(data, chrom, margin = 10, step.width = 1e+05, kernel = rbf,
-                  kernelparams = list(gamma = 1/10^13), saveToFile = TRUE)
+                  kernelparams = list(gamma = 1/10^13), saveToFile = FALSE)
 }
-%- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{data}{ MACATData Object }
   \item{chrom}{ chromosome to kernelize}
@@ -19,8 +17,8 @@ discreteKernelize(data, chrom, margin = 10, step.width = 1e+05, kernel = rbf,
   \item{step.width}{ size of the interpolation steps }
   \item{kernel}{ kernel function one of rbf, kNN, basePairDistance or your own }
   \item{kernelparams}{ list of named kernel parameters }
-  \item{saveToFile}{logicval indicating whether to write a flatfile or not 
-  default is true}
+  \item{saveToFile}{logicval indicating whether to write a flatfile or
+    not; default is FALSE}
 }
 \details{
   Filename of the flatfile is: 
@@ -31,17 +29,11 @@ discreteKernelize(data, chrom, margin = 10, step.width = 1e+05, kernel = rbf,
 \value{
   discretized and kernelized expression matrix
 }
-%\references{ }
 \author{ The MACAT Development team }
-%\note{}
-
 \seealso{\code{\link{pydata}}, \code{\link{kernelizeAll}} }
 \examples{
    #loaddatapkg("stjudem")
    data(stjd)
    discretizedKernelized = discreteKernelize(stjd, 13)
 }
-\keyword{ manip }% at least one, from doc/KEYWORDS
-
-
-
+\keyword{manip}

@@ -9,7 +9,7 @@ such as \code{\link{kernelizeToPython}}. These text files can be read into
 PYTHON.
 Each flat files contains a list of matrices. The outer list has one entry for
 each class in the data set, the inner matrices consist of all the sequences from
-the specified chromosome beloning to that class. Each row reprents one sample,
+the specified chromosome belonging to that class. Each row represents one sample,
 each column a gene from the respective chromosome.
 
 The lists are delimited by '[' and ']' brackets. The matrices are written as

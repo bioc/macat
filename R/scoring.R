@@ -16,12 +16,12 @@ scoring <- function(data,labels,method="SAM",pcompute="tdist",nperms=1000,memory
     stop("Vector of Labels does not indicate two groups!")
   if (ncol(data)!=length(labels))
     stop("Dimensions of Data and length of Labels-Vector do not match!")
-  if (!(pcompute %in% c("empirical","tdist","none")))
-    stop("Methode of p-value computation must be \"empirical\",\"tdist\", or \"none\"!\n)")
-  binlabels<-as.numeric(labels==levels(labels)[2])  #binary label vector
+  pcompute <- match.arg(pcompute, c("empirical","tdist","none"))
+  binlabels <- as.numeric(labels==levels(labels)[2])  #binary label vector
   n.possible.permutations <- choose(length(binlabels),sum(binlabels))
-  if (n.possible.permutations < nperms)
+  if ((pcompute=="empirical")&&(n.possible.permutations < nperms))
     warning(paste("For these class labels, the number of possible permutations is",n.possible.permutations,", less than the selected number of permuations,",nperms,".\n Consider fewer permutations or select 'pcompute=\"tdist\"'\n"))
+  
   ngenes <- nrow(data)
     
   ### 2. Compute observed scores: ###
