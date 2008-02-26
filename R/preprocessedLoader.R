@@ -60,12 +60,12 @@ preprocessedLoader <- function(rdatafile,chip,labels=NULL,chromLocObj=NULL, rdaf
   if (is.null(colnames(m))){
     colnames(m) <- paste("sample",as.character(1:ncol(m)),sep="")
   }
-  # build pheno data to satisfy current exprSet validation:
+  # build pheno data to satisfy current ExpressionSet validation:
   sampleDataFrame <- data.frame(sampleNames=I(colnames(m)),
                                 row.names=colnames(m))
   pdata <- new("phenoData", pData=sampleDataFrame,
                varLabels=list(names(sampleDataFrame)))
-  eset  <- new("exprSet", exprs=m, phenoData=pdata)
+  eset  <- new("ExpressionSet", exprs=m, phenoData=pdata)
   chromosomes <- names(chromLocs(chromLocationObj))
   allGeneNames <- c()
   allGeneLocations <- c()
