@@ -63,8 +63,9 @@ preprocessedLoader <- function(rdatafile,chip,labels=NULL,chromLocObj=NULL, rdaf
   # build pheno data to satisfy current ExpressionSet validation:
   sampleDataFrame <- data.frame(sampleNames=I(colnames(m)),
                                 row.names=colnames(m))
-  pdata <- new("phenoData", pData=sampleDataFrame,
-               varLabels=list(names(sampleDataFrame)))
+  pdata <- new("AnnotatedDataFrame")
+  pData(pdata) <- sampleDataFrame
+  varLabels(pdata) <- list(names(sampleDataFrame))
   eset  <- new("ExpressionSet", exprs=m, phenoData=pdata)
   chromosomes <- names(chromLocs(chromLocationObj))
   allGeneNames <- c()
@@ -75,7 +76,7 @@ preprocessedLoader <- function(rdatafile,chip,labels=NULL,chromLocObj=NULL, rdaf
   usedChromGenes2 <- function (eSet, chrom, specChrom){
     cLocs <- chromLocs(specChrom)
     genes <- cLocs[[chrom]]
-    usedGenes <- genes[names(genes) %in% geneNames(eSet)]
+    usedGenes <- genes[names(genes) %in% featureNames(eSet)]
     if (length(usedGenes)==0) return(NULL)
     ord <- order(abs(usedGenes))
     usedGenes <- as.list(usedGenes[ord])
