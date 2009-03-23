@@ -1,11 +1,11 @@
 Package: macat
 Title: MicroArray Chromosome Analysis Tool
-Version: 1.17.0
-Date: 2007-12-06
+Version: 1.17.1
+Date: 2009-03-23
 Author: Benjamin Georgi, Matthias Heinig, Stefan Roepcke, Sebastian
         Schmeier, Joern Toedling
 Depends: Biobase, annotate
-Suggests: hgu95av2, stjudem
+Suggests: hgu95av2.db, stjudem
 Description: This library contains functions to investigate links
         between differential gene expression and the chromosomal
         localization of the genes. MACAT is motivated by the common

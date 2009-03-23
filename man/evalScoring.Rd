@@ -12,7 +12,8 @@
   regions.
 }
 \usage{
-evalScoring(data,class,chromosome,nperms=1000,permute="labels",subset=NULL,
+evalScoring(data, class, chromosome, nperms=1000, permute="labels",
+     pcompute="empirical", subset=NULL,
      newlabels=NULL,kernel=rbf,kernelparams=NULL,cross.validate=TRUE,
      paramMultipliers=2^(-4:4),ncross=10,step.width=100000,
      memory.limit=TRUE, verbose=TRUE)
@@ -26,8 +27,12 @@ evalScoring(data,class,chromosome,nperms=1000,permute="labels",subset=NULL,
   \item{permute}{Method to do permutations. Default 'labels' does permutations
 	of the class labels, which is the common and faster way to assess
 	significance of differential expression. The altenative 'locations'
-	does permutations of gene locations, is much slower and right only
-	preliminary.}
+	does permutations of gene locations, is much slower and right
+	now should be considered preliminary at best.}
+  \item{pcompute}{Method to determine the p-value for differential
+    expression of each gene. Is only evaluated if the argument
+    \code{permute='labels'} and in that case passed on to the function
+    \code{scoring}}
   \item{subset}{If a subset of samples is to be used, give vector of column-
 	indices of these samples in the original matrix here.}
   \item{newlabels}{If other labels than the ones in the MACAT-list-structure

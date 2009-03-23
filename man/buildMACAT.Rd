@@ -39,7 +39,7 @@
 	'1918_at','41499_at','41500_at','41282_s_at')
  colnames(X) <- paste("Sample",1:10,sep="")
  y <- rep(c("A","B"),c(5,5))
- toy <- buildMACAT(X,"hgu95av2",y)
+ toy <- buildMACAT(X,"hgu95av2.db",y)
  summary(toy)
 }
 \keyword{manip}
