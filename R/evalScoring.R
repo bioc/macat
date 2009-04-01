@@ -32,7 +32,7 @@ evalScoring <- function(data,class,chromosome,nperms=1000,permute="labels", pcom
     cat(paste("Investigating",sum(areOfClass),"samples of class",class,"...\n"))
   
   n.possible.permutations <- choose(length(areOfClass),sum(areOfClass))
-  if (n.possible.permutations < nperms)
+  if ((permute=="labels") && (n.possible.permutations < nperms))
     warning(paste("For these class labels, the number of possible permutations is",n.possible.permutations,", less than the selected number of permuations,",nperms,".\n Consider fewer permutations or select 'permute=\"locations\"'\n"))
   
   # Assess list components:
@@ -83,8 +83,8 @@ evalScoring <- function(data,class,chromosome,nperms=1000,permute="labels", pcom
     for (i in 1:nperms)
       permMatrix[i,] <- sample(absOnChromLocs)
     # auxiliary function:
-    computePermSlideScores <- function(permLocs){
-      cat(".")
+    computePermSlideScores <- function(permLocs, verbose=FALSE){
+      if (verbose) cat(".")
       permM <- list(geneName=onChromGenes,geneLocation=permLocs,
                     chromosome=onChromChrom,expr=onChromScores)
       permS <- compute.sliding(permM,chrom=chromosome,sample=1,kernel,kernelparams,step.width=step.width)
@@ -92,7 +92,7 @@ evalScoring <- function(data,class,chromosome,nperms=1000,permute="labels", pcom
     }#computePermSlideScores
     if (verbose)
       cat(paste("Assessing",nperms,"permutations:\n"))
-    permSlideScores <- apply(permMatrix,1,computePermSlideScores)
+    permSlideScores <- apply(permMatrix,1,computePermSlideScores, verbose=verbose)
     if (verbose)
       cat("Computing expected borders...\n")
     expected.borders <- apply(permSlideScores,1,quantile,probs=c(0.025,0.975))
@@ -138,7 +138,7 @@ plot.MACATevalScoring <- function(x, output="x11", HTMLfilename=NULL, mytitle=NU
   if (!interactive())
     output <- "none"
   output <- match.arg(output, c("x11","html", "none"))
-  require(x$chip,character.only=TRUE)
+  require(gsub("\\.db\\.db$",".db",paste(x$chip,"db",sep=".")),character.only=TRUE)
   chromlength <- eval(as.symbol(paste(gsub("\\.db$","",x$chip),"CHRLENGTHS",sep="")))[x$chromosome]
   lowestpos <- 0 # old: min(min(original.loc),min(steps))
   highestpos <- chromlength # old: max(max(original.loc),max(steps))

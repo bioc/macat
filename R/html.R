@@ -48,7 +48,7 @@ myhtml <- function (genelist, chrom, SLIDINGpic, CHROMpic, filename, mytitle, ot
       }
       
       # annotate function
-      rows <- getTDRows(genelist, "ll")
+      rows <- annotate:::getTDRows(genelist, "en")
       if (!missing(othernames)) {
         if (is.list(othernames)) {
           others <- ""
@@ -68,6 +68,9 @@ myhtml <- function (genelist, chrom, SLIDINGpic, CHROMpic, filename, mytitle, ot
     cat("</body>", "</html>", sep = "\n", file = outfile)
     close(outfile)
 } #myhtml
+
+
+
 
 
 ####################################################################################
@@ -107,6 +110,13 @@ getHtml <- function(MACATevalScoringOBJ, SLIDINGpic, HTMLfilename, mytitle){
    browseURL(html)
 } # getHtml
 
+##########################################################
+### auxiliary functions to work with newer .db packages:
+############################################################
+getFromDb <- function(ids, chip, envName){
+  thisEnv <- paste(gsub("\\.db$","", chip), envName, sep="")
+  as.character(get(thisEnv)[ids])
+}
 
 ####################################################################################
 # Functiopn returns a list with important information about interesting sides
@@ -115,9 +125,7 @@ getHtml <- function(MACATevalScoringOBJ, SLIDINGpic, HTMLfilename, mytitle){
 getResults <- function(MACATevalScoringOBJ){
 
    stopifnot(inherits(MACATevalScoringOBJ,"MACATevalScoring")) # check class of object
-   
-   #attach(MACATevalScoringOBJ, warn.conflicts=FALSE)
-   require(MACATevalScoringOBJ$chip, character.only=TRUE)
+   require(gsub("\\.db\\.db$",".db",paste(MACATevalScoringOBJ$chip,"db",sep=".")),character.only=TRUE)
       
    step.width = MACATevalScoringOBJ$steps[2] - MACATevalScoringOBJ$steps[1]
    #----------------------------------------------
@@ -168,18 +176,10 @@ getResults <- function(MACATevalScoringOBJ){
    contractMultiple <- function(charVec) {
      return(paste(charVec, collapse="; "))
    }
-   
-   thisEnv = paste(MACATevalScoringOBJ$chip, "GENENAME", sep="")
-   genedescription = mget(genesU, env=eval(as.symbol(thisEnv)))
-   thisEnv = paste(MACATevalScoringOBJ$chip, "ENTREZID", sep="")
-   ## xLOCUSID was renamed to xENTREZID from Bioc 1.9 on
-   if (!exists(thisEnv))
-     thisEnv = paste(MACATevalScoringOBJ$chip, "LOCUSID", sep="")
-   locusids=mget(genesU, env=eval(as.symbol(thisEnv)))
-   thisEnv=paste(MACATevalScoringOBJ$chip, "SYMBOL", sep="")
-   symbol=mget(genesU, env=eval(as.symbol(thisEnv)))
-   thisEnv=paste(MACATevalScoringOBJ$chip, "MAP", sep="")
-   cytoband=mget(genesU, env=eval(as.symbol(thisEnv)))
+   genedescription <- getFromDb(genesU, MACATevalScoringOBJ$chip, "GENENAME")
+   locusids <- getFromDb(genesU, MACATevalScoringOBJ$chip, "ENTREZID")
+   symbol   <- getFromDb(genesU, MACATevalScoringOBJ$chip, "SYMBOL")
+   cytoband <- getFromDb(genesU, MACATevalScoringOBJ$chip, "MAP")
 
    contract <- function(listX){
      return(sapply(listX, contractMultiple))

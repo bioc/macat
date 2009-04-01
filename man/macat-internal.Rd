@@ -14,6 +14,7 @@
 \alias{demo.part}
 \alias{crossvalParam}
 \alias{evalParams}
+\alias{getFromDb}
 \title{Auxiliary Functions for Computations in MACAT}
 \description{
   Auxiliary functions for internal usage by other MACAT functions.
