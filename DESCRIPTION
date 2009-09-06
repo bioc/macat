@@ -1,6 +1,6 @@
 Package: macat
 Title: MicroArray Chromosome Analysis Tool
-Version: 1.19.0
+Version: 1.19.1
 Date: 2009-03-31
 Author: Benjamin Georgi, Matthias Heinig, Stefan Roepcke, Sebastian
         Schmeier, Joern Toedling
@@ -17,7 +17,7 @@ Description: This library contains functions to investigate links
         leukemia (Yeoh et al.Cancer Cell 2002), which is provided in
         the library 'stjudem'.
 Maintainer: Joern Toedling <joern.toedling@curie.fr>
-License: Artistic License 2.0
+License: Artistic-2.0
 biocViews: Microarray, DifferentialExpression, Visualization
 Reference: Toedling J, Schmeier S, Heinig M, Georgi B, Roepcke S (2005).
 	MACAT - MicroArray Chromosome Analysis Tool.
