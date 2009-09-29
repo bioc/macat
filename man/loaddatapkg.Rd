@@ -23,7 +23,7 @@
   \code{source("http://www.bioconductor.org/biocLite.R");biocLite("stjudem")}
 }
 \author{Joern Toedling}
-\seealso{\code{\link[utils]{install.packages}}}
+\seealso{\code{\link[utils:update.packages]{install.packages}}}
 \examples{
  \dontrun{loaddatapkg("stjudem") # to load the data package "stjudem"}
 }

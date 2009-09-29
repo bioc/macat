@@ -53,7 +53,8 @@ rdafile = TRUE, tabfile = FALSE, labelfile = FALSE)
   the Bioconductor package \code{AnnBuilder}. For an example, see the
   common annotation package \code{hgu95av2}.
 }
-\seealso{\code{\link{buildMACAT}},\code{\link[base]{read.table}},\code{\link{stjd}},\code{stjude} in package 'stjudem'}
+\seealso{\code{\link{buildMACAT}},\code{\link[utils]{read.table}},
+  \code{\link{stjd}},\code{stjude} in package 'stjudem'} 
 \examples{
  \dontrun{
   # assume you have your HG-U95Av2 expression values in a
