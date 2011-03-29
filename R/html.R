@@ -125,9 +125,11 @@ getFromDb <- function(ids, chip, envName){
 getResults <- function(MACATevalScoringOBJ){
 
    stopifnot(inherits(MACATevalScoringOBJ,"MACATevalScoring")) # check class of object
-   require(gsub("\\.db\\.db$",".db",paste(MACATevalScoringOBJ$chip,"db",sep=".")),character.only=TRUE)
+   libname <- gsub("\\.db\\.db$", ".db",
+           	paste(MACATevalScoringOBJ$chip,"db",sep="."))
+   require(libname, character.only=TRUE)
       
-   step.width = MACATevalScoringOBJ$steps[2] - MACATevalScoringOBJ$steps[1]
+   step.width <- MACATevalScoringOBJ$steps[2] - MACATevalScoringOBJ$steps[1]
    #----------------------------------------------
    # find all genes in significant regions
    # vec of significant Genes
