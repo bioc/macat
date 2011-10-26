@@ -92,6 +92,7 @@ evalScoring(data, class, chromosome, nperms=1000, permute="labels",
     #  you should work on the full data therein, of which
     #  the provided example data, is just a piece
     #loaddatapkg("stjudem")
+    #data(stjude)
 
     # T-lymphocyte versus B-lymphocyte on chromosome 1, 
     #  smoothed with k-Nearest-Neighbours kernel(k=15), 

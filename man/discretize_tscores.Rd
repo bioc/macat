@@ -36,6 +36,7 @@ discretizeAllClasses.tscores(data, chrom, nperms=10, kernel=rbf, kernelparams=NU
 \seealso{ \code{\link{evalScoring}}, \code{\link{kernels}}, \code{\link{pythondata}}}
 \examples{
   #loaddatapkg("stjudem")
+  #data(stjude)
   data(stjd)
   # simple scoring with short running time
   scores = evalScoring(stjd, "T", 1, nperms=100, cross.validate=FALSE)

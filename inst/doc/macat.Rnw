@@ -468,6 +468,7 @@ package \Rpackage{stjudem}.
 <<>>=
 library(macat)
 loaddatapkg("stjudem")
+data(stjude)
 @ 
 We now have a data object called \Robject{stjude}.
 

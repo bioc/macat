@@ -31,6 +31,7 @@ kernelizeAll(data, step.width = 1e+05, kernel = rbf,
  \dontrun{
   # !!! takes quite some time !!!
   loaddatapkg("stjudem")
+  data(stjude)
   kernelizeAll(stjude)
  }
 }

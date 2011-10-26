@@ -27,6 +27,7 @@ discretizeAll(data, margin = 10)
  # !!! takes some time !!!
  \dontrun{
   #loaddatapkg("stjudem")
+  #data(stjude)
   data(stjd)
   discretizeAll(stjd, margin=10) 
  }
