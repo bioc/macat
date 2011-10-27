@@ -1,8 +1,10 @@
 all:	pdf
 
+macat.tex:    macat.Rnw
+	"$(R_HOME)/bin/R" CMD Sweave $<
+
 pdf:	macat.tex
-#	pdflatex macat
-#	pdflatex macat
+	"$(R_HOME)/bin/R" CMD texi2dvi --pdf --clean $<
 	make clean
 
 clean:

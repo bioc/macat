@@ -4,18 +4,18 @@
 %\VignettePackage{macat}
 
 %%% check whether we are running pdflatex
-\newif\ifpdf
+\newif\ifmacatpdf
   \ifx\pdfoutput\undefined
-  \pdffalse                 % we are not running pdflatex
+  \macatpdffalse            % we are not running pdflatex
 \else
   \pdfoutput=1              % we are running pdflatex
   \pdfcompresslevel=9       % compression level for text and image;
-  \pdftrue
+  \macatpdftrue
 \fi
 
 %%% choose global options depending on whether
 %%% we are running under pdflatex
-\ifpdf
+\ifmacatpdf
   \documentclass[11pt, a4paper, fleqn, pdftex]{article}
   \usepackage[pdftex]{graphicx, geometry, color}
   \geometry{headsep=3ex,hscale=.9}
