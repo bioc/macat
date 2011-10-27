@@ -2,7 +2,7 @@ library(macat)
 
 demo.part(1)
 loaddatapkg("stjudem")
-#data(stjude)
+data(stjude)
 
 demo.part(2)
 summary(stjude)
