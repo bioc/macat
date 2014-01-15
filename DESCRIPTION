@@ -1,7 +1,7 @@
 Package: macat
 Title: MicroArray Chromosome Analysis Tool
-Version: 1.37.1
-Date: 2011-06-03
+Version: 1.37.2
+Date: 2014-01-15
 Author: Benjamin Georgi, Matthias Heinig, Stefan Roepcke, Sebastian
         Schmeier, Joern Toedling
 Depends: Biobase, annotate
@@ -16,7 +16,7 @@ Description: This library contains functions to investigate links
         on a publicly available data set about acute lymphoblastic
         leukemia (Yeoh et al.Cancer Cell 2002), which is provided in
         the library 'stjudem'.
-Maintainer: Joern Toedling <j.toedling@imb-mainz.de>
+Maintainer: Joern Toedling <jtoedling@yahoo.de>
 License: Artistic-2.0
 biocViews: Microarray, DifferentialExpression, Visualization
 Reference: Toedling J, Schmeier S, Heinig M, Georgi B, Roepcke S (2005).
