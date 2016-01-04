@@ -4,7 +4,7 @@ macat.tex:    macat.Rnw
 	"$(R_HOME)/bin/R" CMD Sweave $<
 
 pdf:	macat.tex
-	"$(R_HOME)/bin/R" CMD texi2dvi --pdf --clean $<
+	"$(R_HOME)/bin/R" CMD pdflatex $<
 	make clean
 
 clean:
