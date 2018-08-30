@@ -34,7 +34,7 @@
   For the full data package see the Bioconductor data package
   \code{stjudem}. If it is not already installed on your system, try
   \code{source("http:\\www.bioconductor.org\biocLite.R");
-    biocLite("stjudem")}
+    BiocManager::install("stjudem")}
 }
 \references{
     Yeoh et al. Classification, 
