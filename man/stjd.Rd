@@ -33,7 +33,8 @@
 \note{
   For the full data package see the Bioconductor data package
   \code{stjudem}. If it is not already installed on your system, try
-  \code{source("http:\\www.bioconductor.org\biocLite.R");
+  \code{if (!requireNamespace("BiocManager", quietly=TRUE));
+    install.packages("BiocManager");
     BiocManager::install("stjudem")}
 }
 \references{

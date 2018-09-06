@@ -20,7 +20,8 @@
 \note{The package \code{stjudem} by now is a Bioconductor example data
   package, too. Thus, you can also install it using the \code{biocLite}
   function. Try the following:
-  \code{source("http://www.bioconductor.org/biocLite.R");biocLite("stjudem")}
+  \code{if (!requireNamespace("BiocManager", quietly=TRUE));BiocManager::install("stjudem")}
+    install.packages("BiocManager");BiocManager::install("stjudem")}
 }
 \author{Joern Toedling}
 \seealso{\code{\link[utils:update.packages]{install.packages}}}
