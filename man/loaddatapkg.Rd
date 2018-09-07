@@ -18,8 +18,7 @@
 		paths.}
 }
 \note{The package \code{stjudem} by now is a Bioconductor example data
-  package, too. Thus, you can also install it using the \code{biocLite}
-  function. Try the following:
+  package, too. Thus, you can also install with the following:
   \code{if (!requireNamespace("BiocManager", quietly=TRUE));BiocManager::install("stjudem")}
     install.packages("BiocManager");BiocManager::install("stjudem")}
 }
