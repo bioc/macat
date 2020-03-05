@@ -37,7 +37,7 @@ preprocessedLoader <- function(rdatafile,chip,labels=NULL,chromLocObj=NULL, rdaf
     load(rdatafile)
     newworkspace <- ls()
     newobject <- setdiff(newworkspace,oldworkspace)
-    if (length(newobject)!=1)
+    if (length(newobject)!=1L)
       stop ("R-Data file contained no single new object!\nTry specifying expression matrix as first argument and set argument 'file=FALSE'!\n")
     m <- eval(as.symbol(newobject))
     #m=expr.mat
@@ -77,7 +77,7 @@ preprocessedLoader <- function(rdatafile,chip,labels=NULL,chromLocObj=NULL, rdaf
     cLocs <- chromLocs(specChrom)
     genes <- cLocs[[chrom]]
     usedGenes <- genes[names(genes) %in% featureNames(eSet)]
-    if (length(usedGenes)==0) return(NULL)
+    if (length(usedGenes)==0L) return(NULL)
     ord <- order(abs(usedGenes))
     usedGenes <- as.list(usedGenes[ord])
     return(usedGenes)
@@ -86,20 +86,20 @@ preprocessedLoader <- function(rdatafile,chip,labels=NULL,chromLocObj=NULL, rdaf
   for (chromosome in chromosomes) {
     cat(paste("Locating genes on chromosome",chromosome,".... "))
     usedGenes <- usedChromGenes2(eset, chromosome, chromLocationObj)
-    if (length(usedGenes)==0){
+    if (length(usedGenes)==0L){
       cat("0\n")
       next
     }
     usedGenes <- usedGenes[!is.na(usedGenes)]
     cat(length(usedGenes),"\n")
-    if (length(usedGenes)==0) next
+    if (length(usedGenes)==0L) next
     geneName <- names(usedGenes)
     geneLocation <- as.numeric(usedGenes)
     allGeneNames <- c(allGeneNames,geneName)
     allGeneLocations <- c(allGeneLocations,geneLocation)
     allChromosomes <- c(allChromosomes,as.character(rep(chromosome,length(geneName))))
   } # for chromosome
-  if (length(allGeneNames)==0)
+  if (length(allGeneNames)==0L)
     stop("Gene-Identifier not found on specified chip!\nCheck 'featureNames' of the ExpressionSet or 'rownames' of the matrix.\nFor Affymetrix-Arrays, Probe-Set IDs are expected!")
   data <- list(geneName=allGeneNames,geneLocation=allGeneLocations,
                chromosome=allChromosomes, expr=m,labels=labels,chip=chip)
@@ -109,7 +109,7 @@ preprocessedLoader <- function(rdatafile,chip,labels=NULL,chromLocObj=NULL, rdaf
 
 ## wrapper for preprocessedLoader: ###
 buildMACAT <- function(matrix,chip,labels=NULL, chromLocObj=NULL){
-  if (class(matrix)=="ExpressionSet"){
+  if (inherits(matrix, "ExpressionSet")){
     rNames <- featureNames(matrix)
     cNames <- sampleNames(matrix)
     matrix <- exprs(matrix)

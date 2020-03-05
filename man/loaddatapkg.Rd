@@ -18,9 +18,8 @@
 		paths.}
 }
 \note{The package \code{stjudem} by now is a Bioconductor example data
-  package, too. Thus, you can also install with the following:
-  \code{if (!requireNamespace("BiocManager", quietly=TRUE));BiocManager::install("stjudem")}
-    install.packages("BiocManager");BiocManager::install("stjudem")}
+  package, too. Thus, you can also install with the following command:
+  \code{BiocManager::install('stjudem')}
 }
 \author{Joern Toedling}
 \seealso{\code{\link[utils:update.packages]{install.packages}}}

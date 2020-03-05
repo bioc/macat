@@ -152,7 +152,7 @@ getResults <- function(MACATevalScoringOBJ){
          sig[gene] = issig[i]   
      }
      else {
-       if (issig[i] == FALSE & issig[i+1] == FALSE) {
+       if (!issig[[i]] && !issig[[i+1]]) {
          next 
        }
        else {
