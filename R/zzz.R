@@ -3,7 +3,12 @@
 }
 
 .onAttach <- function(libname, pkgname) {
-  packageStartupMessage("Loading MicroArray Chromosome Analysis Tool...\n",
+    msg <- sprintf(
+        "Package '%s' is deprecated and will be removed from Bioconductor
+         version %s", pkgname, "3.19")
+    .Deprecated(msg=paste(strwrap(msg, exdent=2), collapse="\n"))
+    
+    packageStartupMessage("Loading MicroArray Chromosome Analysis Tool...\n",
                         "Loading required packages...\n")
   
   if (!("stjudem" %in% .packages(all.available=TRUE))){
